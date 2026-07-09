@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
 import { Building } from "lucide-react";
+import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
