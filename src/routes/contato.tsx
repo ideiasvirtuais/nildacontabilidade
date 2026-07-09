@@ -14,6 +14,7 @@ export const Route = createFileRoute("/contato")({
       { property: "og:url", content: "/contato" },
     ],
     links: [{ rel: "canonical", href: "/contato" }],
+    scripts: [breadcrumbScript([{ name: "Contato", path: "/contato" }])],
   }),
   component: Contato,
 });
