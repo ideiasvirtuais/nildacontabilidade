@@ -2,24 +2,9 @@
 // Validate BreadcrumbList JSON-LD produced by the auto-generator.
 // Runs pre-build; a non-zero exit code fails the deploy.
 
-import { readFileSync } from "node:fs";
+import { buildBreadcrumbTrail, breadcrumbJsonLd } from "../src/lib/breadcrumb.ts";
 
-const HELPER_PATH = "src/lib/breadcrumb.ts";
 const errors = [];
-
-// Strip TS types so we can import the helper from a data: URL.
-const helperSrc = readFileSync(HELPER_PATH, "utf8")
-  .replace(/^export type[^\n]+\n/gm, "")
-  .replace(/:\s*Record<[^>]+>/g, "")
-  .replace(/:\s*BreadcrumbItem\[\]/g, "")
-  .replace(/:\s*string(\[\])?/g, "")
-  .replace(/\)\s*:\s*BreadcrumbItem\[\]/g, ")")
-  .replace(/\)\s*:\s*string/g, ")")
-  .replace(/\s+as const/g, "");
-
-const helperUrl =
-  "data:text/javascript;base64," + Buffer.from(helperSrc).toString("base64");
-const { buildBreadcrumbTrail, breadcrumbJsonLd } = await import(helperUrl);
 
 // Static routes + a dynamic sample to prove the fallback covers unknown segments.
 const SAMPLE_PATHS = [
