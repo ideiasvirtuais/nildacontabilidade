@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionHeading } from "../components/SectionHeading";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/contato")({
   head: () => ({
