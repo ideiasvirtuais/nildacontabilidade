@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { NildaLogo } from "./NildaLogo";
 
 export function SiteFooter() {
   return (
     <footer className="mt-24 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-4">
         <div>
-          <div className="font-display text-xl">Nilda Contabilidade</div>
-          <p className="mt-3 text-sm text-primary-foreground/70">
+          <NildaLogo variant="light" className="h-14 w-auto" />
+          <p className="mt-4 text-sm text-primary-foreground/70">
             Assessoria contábil e jurídica com seriedade, comprometimento e transparência desde 1996.
           </p>
         </div>
