@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
 import { CheckCircle2, ArrowRight, MapPin } from "lucide-react";
+import empresaContadora from "../assets/empresa-contadora.jpg";
 
 export const Route = createFileRoute("/empresa")({
   head: () => ({
@@ -36,7 +37,18 @@ function Empresa() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-16 px-6 py-20 md:grid-cols-2">
+      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">
+        <div className="relative order-last md:order-first">
+          <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent/10" />
+          <img
+            src={empresaContadora}
+            alt="Nilda Luiz, fundadora da Nilda Contabilidade, em seu escritório em Betim/MG"
+            width={1024}
+            height={1280}
+            loading="lazy"
+            className="h-full w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
+          />
+        </div>
         <div className="space-y-5 text-muted-foreground">
           <h2 className="font-display text-3xl text-primary">Nossa história</h2>
           <p>
@@ -57,12 +69,14 @@ function Empresa() {
             <MapPin className="h-5 w-5 text-accent" /> Sede em Betim/MG · Atendimento em todo o Brasil
           </div>
         </div>
+      </section>
 
-        <div className="rounded-3xl border border-border bg-card p-10 shadow-[var(--shadow-soft)]">
+      <section className="mx-auto max-w-7xl px-6 pb-20">
+        <div className="rounded-3xl border border-border bg-card p-10 shadow-[var(--shadow-soft)] md:p-14">
           <div className="text-xs uppercase tracking-[0.25em] text-accent">A fundadora</div>
           <h3 className="mt-2 font-display text-4xl text-primary">Nilda Luiz</h3>
           <p className="mt-1 text-sm text-muted-foreground">Contadora — CRC/MG 064314/O-3</p>
-          <ul className="mt-8 space-y-3 text-sm">
+          <ul className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
             {contadora.map((c) => (
               <li key={c} className="flex gap-3">
                 <CheckCircle2 className="h-5 w-5 shrink-0 text-accent" />
