@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
 import { CheckCircle2, ArrowRight, Users, Scale, FileText, HelpCircle } from "lucide-react";
 import { useState } from "react";
+import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/cooperativas")({
   head: () => ({
