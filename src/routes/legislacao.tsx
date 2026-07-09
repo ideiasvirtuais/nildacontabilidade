@@ -14,6 +14,7 @@ export const Route = createFileRoute("/legislacao")({
       { property: "og:url", content: "/legislacao" },
     ],
     links: [{ rel: "canonical", href: "/legislacao" }],
+    scripts: [breadcrumbScript([{ name: "Legislação", path: "/legislacao" }])],
   }),
   component: Legislacao,
 });
