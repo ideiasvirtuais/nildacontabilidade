@@ -37,7 +37,7 @@ function Empresa() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl items-start gap-10 px-6 py-20 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-14">
+      <section className="mx-auto grid max-w-6xl items-start gap-10 px-6 py-20 md:grid-cols-[5fr_7fr] md:gap-14">
         <div className="relative order-last mx-auto w-full max-w-sm md:sticky md:top-24 md:order-first md:mx-0 md:max-w-none">
           <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent/10" />
           <img
