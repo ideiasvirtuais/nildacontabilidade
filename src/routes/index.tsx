@@ -130,6 +130,9 @@ function Home() {
         </div>
       </section>
 
+      {/* Carrossel de clientes */}
+      <ClientsCarousel />
+
       {/* Segmentos */}
       <section className="bg-secondary">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 md:grid-cols-5">
