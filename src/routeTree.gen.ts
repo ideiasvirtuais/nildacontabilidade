@@ -13,8 +13,10 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicosRouteImport } from './routes/servicos'
 import { Route as LegislacaoRouteImport } from './routes/legislacao'
 import { Route as EmpresaRouteImport } from './routes/empresa'
+import { Route as CooperativasRouteImport } from './routes/cooperativas'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -37,6 +39,11 @@ const EmpresaRoute = EmpresaRouteImport.update({
   path: '/empresa',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CooperativasRoute = CooperativasRouteImport.update({
+  id: '/cooperativas',
+  path: '/cooperativas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
@@ -47,6 +54,11 @@ const ClientesRoute = ClientesRouteImport.update({
   path: '/clientes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,8 +67,10 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
+  '/cooperativas': typeof CooperativasRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -64,8 +78,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
+  '/cooperativas': typeof CooperativasRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -74,8 +90,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
+  '/cooperativas': typeof CooperativasRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -85,8 +103,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/blog'
     | '/clientes'
     | '/contato'
+    | '/cooperativas'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -94,8 +114,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blog'
     | '/clientes'
     | '/contato'
+    | '/cooperativas'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -103,8 +125,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/blog'
     | '/clientes'
     | '/contato'
+    | '/cooperativas'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -113,8 +137,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BlogRoute: typeof BlogRoute
   ClientesRoute: typeof ClientesRoute
   ContatoRoute: typeof ContatoRoute
+  CooperativasRoute: typeof CooperativasRoute
   EmpresaRoute: typeof EmpresaRoute
   LegislacaoRoute: typeof LegislacaoRoute
   ServicosRoute: typeof ServicosRoute
@@ -151,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmpresaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cooperativas': {
+      id: '/cooperativas'
+      path: '/cooperativas'
+      fullPath: '/cooperativas'
+      preLoaderRoute: typeof CooperativasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contato': {
       id: '/contato'
       path: '/contato'
@@ -165,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -177,8 +217,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BlogRoute: BlogRoute,
   ClientesRoute: ClientesRoute,
   ContatoRoute: ContatoRoute,
+  CooperativasRoute: CooperativasRoute,
   EmpresaRoute: EmpresaRoute,
   LegislacaoRoute: LegislacaoRoute,
   ServicosRoute: ServicosRoute,
