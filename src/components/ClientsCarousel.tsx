@@ -35,14 +35,16 @@ export function ClientsCarousel() {
               "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           }}
         >
-          <div className="flex w-max animate-[marquee_35s_linear_infinite] gap-6">
+          <div className="flex w-max animate-[marquee_35s_linear_infinite] gap-4 sm:gap-6">
             {loop.map((nome, i) => (
               <div
                 key={`${nome}-${i}`}
-                className="flex h-24 w-56 shrink-0 items-center justify-center gap-3 rounded-xl border border-border bg-card px-6 shadow-sm grayscale transition hover:grayscale-0"
+                className="flex h-20 w-44 shrink-0 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 shadow-sm grayscale transition hover:grayscale-0 sm:h-24 sm:w-56 sm:gap-3 sm:px-6"
               >
-                <Building2 className="h-6 w-6 shrink-0 text-accent" />
-                <span className="font-display text-sm text-primary">{nome}</span>
+                <Building2 className="h-5 w-5 shrink-0 text-accent sm:h-6 sm:w-6" />
+                <span className="text-center font-display text-xs leading-tight text-primary sm:text-sm">
+                  {nome}
+                </span>
               </div>
             ))}
           </div>
