@@ -13,6 +13,7 @@ export const Route = createFileRoute("/empresa")({
       { property: "og:url", content: "/empresa" },
     ],
     links: [{ rel: "canonical", href: "/empresa" }],
+    scripts: [breadcrumbScript([{ name: "A Empresa", path: "/empresa" }])],
   }),
   component: Empresa,
 });
