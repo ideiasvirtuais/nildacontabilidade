@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroOffice from "../assets/hero-office.jpg";
 import { ArrowRight, Truck, Users2, Building2, Scale, MapPin, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
+import { ClientsCarousel } from "../components/ClientsCarousel";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -128,6 +129,9 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {/* Carrossel de clientes */}
+      <ClientsCarousel />
 
       {/* Segmentos */}
       <section className="bg-secondary">
