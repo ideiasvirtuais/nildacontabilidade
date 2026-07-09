@@ -37,8 +37,8 @@ function Empresa() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">
-        <div className="relative order-last md:order-first">
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
+        <div className="relative order-last mx-auto w-full max-w-md md:order-first md:mx-0 md:max-w-none">
           <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent/10" />
           <img
             src={empresaContadora}
@@ -46,7 +46,7 @@ function Empresa() {
             width={1024}
             height={1280}
             loading="lazy"
-            className="h-full w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
+            className="aspect-[4/5] w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
           />
         </div>
         <div className="space-y-5 text-muted-foreground">
