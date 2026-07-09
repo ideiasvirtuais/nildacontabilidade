@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
 import { ArrowRight, BookOpen } from "lucide-react";
+import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
