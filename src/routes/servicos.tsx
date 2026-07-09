@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionHeading } from "../components/SectionHeading";
 import { Check } from "lucide-react";
+import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/servicos")({
   head: () => ({
