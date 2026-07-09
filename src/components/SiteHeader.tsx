@@ -17,14 +17,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-md bg-primary text-primary-foreground">
-            <span className="font-display text-lg">N</span>
-          </div>
-          <div className="leading-tight">
-            <div className="font-display text-lg text-primary">Nilda Contabilidade</div>
-            <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Desde 1996 · Betim/MG</div>
-          </div>
+        <Link to="/" className="flex items-center">
+          <NildaLogo className="h-14 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
