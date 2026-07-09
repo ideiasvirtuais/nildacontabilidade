@@ -14,6 +14,7 @@ export const Route = createFileRoute("/cooperativas")({
       { property: "og:url", content: "/cooperativas" },
     ],
     links: [{ rel: "canonical", href: "/cooperativas" }],
+    scripts: [breadcrumbScript([{ name: "Cooperativas", path: "/cooperativas" }])],
   }),
   component: Cooperativas,
 });
