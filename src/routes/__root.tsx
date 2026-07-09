@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { AutoBreadcrumbJsonLd } from "../components/AutoBreadcrumbJsonLd";
+import { WhatsAppFloat } from "../components/WhatsAppFloat";
 
 function NotFoundComponent() {
   return (
@@ -178,6 +179,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
         <AutoBreadcrumbJsonLd />
+        <WhatsAppFloat />
       </div>
     </QueryClientProvider>
   );
