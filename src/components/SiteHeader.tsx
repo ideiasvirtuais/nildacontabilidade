@@ -6,9 +6,10 @@ import { NildaLogo } from "./NildaLogo";
 const nav = [
   { to: "/", label: "Início" },
   { to: "/empresa", label: "Empresa" },
+  { to: "/cooperativas", label: "Cooperativas" },
   { to: "/servicos", label: "Serviços" },
+  { to: "/blog", label: "Blog" },
   { to: "/legislacao", label: "Legislação" },
-  { to: "/clientes", label: "Clientes" },
   { to: "/contato", label: "Contato" },
 ] as const;
 

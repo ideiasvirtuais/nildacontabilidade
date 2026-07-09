@@ -16,7 +16,9 @@ export function SiteFooter() {
           <h4 className="text-sm uppercase tracking-widest text-accent">Navegação</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
             <li><Link to="/empresa" className="hover:text-accent">Empresa</Link></li>
+            <li><Link to="/cooperativas" className="hover:text-accent">Cooperativas</Link></li>
             <li><Link to="/servicos" className="hover:text-accent">Serviços</Link></li>
+            <li><Link to="/blog" className="hover:text-accent">Blog</Link></li>
             <li><Link to="/legislacao" className="hover:text-accent">Legislação</Link></li>
             <li><Link to="/clientes" className="hover:text-accent">Clientes</Link></li>
             <li><Link to="/contato" className="hover:text-accent">Contato</Link></li>
