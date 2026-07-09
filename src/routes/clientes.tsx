@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
 import { Building } from "lucide-react";
-import { breadcrumbScript } from "../lib/breadcrumb";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
@@ -13,7 +12,6 @@ export const Route = createFileRoute("/clientes")({
       { property: "og:url", content: "/clientes" },
     ],
     links: [{ rel: "canonical", href: "/clientes" }],
-    scripts: [breadcrumbScript([{ name: "Clientes", path: "/clientes" }])],
   }),
   component: Clientes,
 });

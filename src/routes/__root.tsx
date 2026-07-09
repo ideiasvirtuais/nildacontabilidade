@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { AutoBreadcrumbJsonLd } from "../components/AutoBreadcrumbJsonLd";
 
 function NotFoundComponent() {
   return (
@@ -176,6 +177,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <SiteFooter />
+        <AutoBreadcrumbJsonLd />
       </div>
     </QueryClientProvider>
   );
