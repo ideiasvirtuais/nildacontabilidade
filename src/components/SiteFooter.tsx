@@ -30,7 +30,10 @@ export function SiteFooter() {
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 3531-4004</li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 98553-8780</li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 98555-4004</li>
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> contato@nildacontabilidade.com.br</li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:contato@nildacontabilidade.com.br" className="hover:text-accent">contato@nildacontabilidade.com.br</a></li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:fiscal@nildacontabilidade.com.br" className="hover:text-accent">fiscal@nildacontabilidade.com.br</a></li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:pessoal@nildacontabilidade.com.br" className="hover:text-accent">pessoal@nildacontabilidade.com.br</a></li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:contabil@nildacontabilidade.com.br" className="hover:text-accent">contabil@nildacontabilidade.com.br</a></li>
           </ul>
         </div>
         <div>
