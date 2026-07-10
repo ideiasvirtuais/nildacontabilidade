@@ -92,7 +92,46 @@ jobs:
           # Opcao para limpar arquivos antigos da branch 'stable-website'
           clean: true
 
-      # 7. Envia os arquivos buildados para a KingHost via FTP (com retry e logs verbosos)
+      # 6.9. Inspeciona o diretório remoto ANTES do deploy para confirmar destino correto
+      - name: "Inspecionar diretório remoto na KingHost (pré-deploy)"
+        env:
+          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
+          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
+          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_DIR: ${{ secrets.KINGHOST_FTP_DIR }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+          echo "::group::Configuração do destino FTP"
+          # GitHub mascara o valor exato do secret, então imprimimos características
+          # que ajudam a confirmar sem expor o valor no log.
+          echo "Comprimento de KINGHOST_FTP_DIR: ${#FTP_DIR} caracteres"
+          echo "Começa com '/': $(case "$FTP_DIR" in /*) echo sim;; *) echo NÃO - caminho relativo!;; esac)"
+          echo "Termina com '/': $(case "$FTP_DIR" in */) echo sim;; *) echo não;; esac)"
+          echo "Contém 'www': $(case "$FTP_DIR" in *www*) echo sim;; *) echo NÃO - verifique se é a raiz pública;; esac)"
+          echo "Hash SHA1 (para comparar entre runs sem revelar): $(printf %s "$FTP_DIR" | sha1sum | cut -c1-12)"
+          echo "::endgroup::"
+
+          echo "::group::pwd remoto e listagem do diretório configurado"
+          lftp -u "$FTP_USER","$FTP_PASS" -e "
+            set ssl:verify-certificate no;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            open -p 21 $FTP_HOST;
+            pwd;
+            cd \"$FTP_DIR\" || (echo '::error::Não foi possível acessar KINGHOST_FTP_DIR'; exit 1);
+            pwd;
+            echo '--- Conteúdo atual (antes do deploy): ---';
+            ls -la;
+            echo '--- Favicons presentes? ---';
+            ls -la favicon-32x32.png apple-touch-icon.png favicon-16x16.png favicon-192x192.png favicon-512x512.png 2>&1 || true;
+            echo '--- .htaccess presente? ---';
+            ls -la .htaccess 2>&1 || true;
+            bye;
+          " || echo "::warning::Falha ao inspecionar diretório remoto — verifique host/credenciais/porta."
+          echo "::endgroup::"
+
+
       - name: "Deploy FTP para KingHost (com retry)"
         id: ftp-deploy
         uses: nick-fields/retry@v3
