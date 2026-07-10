@@ -91,3 +91,27 @@ jobs:
           folder: ${{ steps.locate-shell.outputs.deploy_dir }}
           # Opcao para limpar arquivos antigos da branch 'stable-website'
           clean: true
+
+      # 7. Deploy via FTP para a KingHost
+      # Requer os seguintes secrets no repositorio (Settings -> Secrets and variables -> Actions):
+      #   KINGHOST_FTP_HOST     ex: ftp.nildacontabilidade.com.br
+      #   KINGHOST_FTP_USER     usuario FTP
+      #   KINGHOST_FTP_PASSWORD senha FTP
+      #   KINGHOST_FTP_DIR      diretorio remoto, ex: /www/
+      - name: "Deploy FTP para a KingHost"
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.KINGHOST_FTP_HOST }}
+          username: ${{ secrets.KINGHOST_FTP_USER }}
+          password: ${{ secrets.KINGHOST_FTP_PASSWORD }}
+          server-dir: ${{ secrets.KINGHOST_FTP_DIR }}
+          local-dir: ./${{ steps.locate-shell.outputs.deploy_dir }}/
+          protocol: ftp
+          port: 21
+          # Remove arquivos remotos que nao existem mais no build
+          dangerous-clean-slate: true
+          # Nao apaga arquivos que voce mantem manualmente no servidor
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
