@@ -1,17 +1,29 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import {
+  Menu,
+  X,
+  Phone,
+  Home,
+  Building2,
+  Users,
+  Briefcase,
+  BookOpen,
+  Scale,
+  Mail,
+  type LucideIcon,
+} from "lucide-react";
 import { NildaLogo } from "./NildaLogo";
 
-const nav = [
-  { to: "/", label: "Início" },
-  { to: "/empresa", label: "Empresa" },
-  { to: "/cooperativas", label: "Cooperativas" },
-  { to: "/servicos", label: "Serviços" },
-  { to: "/blog", label: "Blog" },
-  { to: "/legislacao", label: "Legislação" },
-  { to: "/contato", label: "Contato" },
-] as const;
+const nav: { to: string; label: string; icon: LucideIcon }[] = [
+  { to: "/", label: "Início", icon: Home },
+  { to: "/empresa", label: "Empresa", icon: Building2 },
+  { to: "/cooperativas", label: "Cooperativas", icon: Users },
+  { to: "/servicos", label: "Serviços", icon: Briefcase },
+  { to: "/blog", label: "Blog", icon: BookOpen },
+  { to: "/legislacao", label: "Legislação", icon: Scale },
+  { to: "/contato", label: "Contato", icon: Mail },
+];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
