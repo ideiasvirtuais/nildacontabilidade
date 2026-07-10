@@ -116,7 +116,7 @@ jobs:
               --password "${{ secrets.KINGHOST_FTP_PASS }}" \
               --local-dir "${{ steps.locate-shell.outputs.deploy_dir }}/" \
               --server-dir "${{ secrets.KINGHOST_FTP_DIR }}" \
-              --protocol ftp \
+              --protocol ftps \
               --port 21 \
               --timeout 60000 \
               --log-level verbose \
