@@ -65,16 +65,20 @@ export function SiteHeader() {
       {open && (
         <div className="border-t border-border md:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
-            {nav.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                onClick={() => setOpen(false)}
-                className="rounded px-2 py-2 text-sm text-foreground hover:bg-muted"
-              >
-                {n.label}
-              </Link>
-            ))}
+            {nav.map((n) => {
+              const Icon = n.icon;
+              return (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="inline-flex items-center gap-2 rounded px-2 py-2 text-sm text-foreground hover:bg-muted"
+                >
+                  <Icon className="h-4 w-4 text-accent" aria-hidden="true" />
+                  {n.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
