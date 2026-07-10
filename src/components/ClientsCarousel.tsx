@@ -8,8 +8,11 @@ import c7 from "../assets/clients/cliente-7.jpg.asset.json";
 import c8 from "../assets/clients/cliente-8.jpg.asset.json";
 import c9 from "../assets/clients/cliente-9.jpg.asset.json";
 import c10 from "../assets/clients/cliente-10.jpg.asset.json";
+import c11 from "../assets/clients/cliente-11.jpg.asset.json";
+import c12 from "../assets/clients/cliente-12.jpg.asset.json";
+import c13 from "../assets/clients/cliente-13.jpg.asset.json";
 
-const logos = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10].map((a, i) => ({
+const logos = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13].map((a, i) => ({
   src: a.url,
   alt: `Cliente ${i + 1}`,
 }));
