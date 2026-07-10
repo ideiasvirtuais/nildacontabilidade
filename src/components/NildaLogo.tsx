@@ -1,23 +1,36 @@
 import { Link } from "@tanstack/react-router";
 
-export function NildaLogo({ className = "" }: { className?: string; variant?: "dark" | "light" }) {
+type Props = {
+  className?: string;
+  variant?: "dark" | "light";
+};
+
+export function NildaLogo({ className = "", variant = "dark" }: Props) {
+  // Aspect ratio of the source PNG (approx 1280×1044)
+  const isLight = variant === "light";
   return (
     <img
       src="/nilda-logo.png"
       alt="Nilda Contabilidade & Jurídico"
-      width={600}
-      height={480}
+      width={1280}
+      height={1044}
       loading="eager"
       decoding="async"
-      className={`bg-white object-contain ${className}`}
+      className={[
+        "object-contain",
+        isLight ? "rounded-md bg-white p-1.5 shadow-sm" : "",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
     />
   );
 }
 
 export function NildaLogoLink() {
   return (
-    <Link to="/" className="inline-flex items-center rounded-md bg-white p-1">
-      <NildaLogo className="h-14 w-auto" />
+    <Link to="/" className="inline-flex items-center" aria-label="Nilda Contabilidade — Início">
+      <NildaLogo className="h-10 w-auto sm:h-12 md:h-14" />
     </Link>
   );
 }

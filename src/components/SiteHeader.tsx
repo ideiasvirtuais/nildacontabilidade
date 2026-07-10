@@ -18,8 +18,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center">
-          <NildaLogo className="h-14 w-auto" />
+        <Link to="/" className="flex shrink-0 items-center" aria-label="Nilda Contabilidade — Início">
+          <NildaLogo className="h-10 w-auto sm:h-12 md:h-14 lg:h-16" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
