@@ -1,18 +1,21 @@
-import { Building2 } from "lucide-react";
+import c1 from "../assets/clients/cliente-1.jpg.asset.json";
+import c2 from "../assets/clients/cliente-2.jpg.asset.json";
+import c3 from "../assets/clients/cliente-3.jpg.asset.json";
+import c4 from "../assets/clients/cliente-4.jpg.asset.json";
+import c5 from "../assets/clients/cliente-5.jpg.asset.json";
+import c6 from "../assets/clients/cliente-6.jpg.asset.json";
+import c7 from "../assets/clients/cliente-7.jpg.asset.json";
+import c8 from "../assets/clients/cliente-8.jpg.asset.json";
+import c9 from "../assets/clients/cliente-9.jpg.asset.json";
+import c10 from "../assets/clients/cliente-10.jpg.asset.json";
 
-const clientes = [
-  "Coop Transporte MG",
-  "TransCargas Brasil",
-  "LogPassageiros",
-  "MineraCoop",
-  "HortiFruti Express",
-  "AutoCegonha Log",
-  "EscolarBus",
-  "ConstruBetim",
-];
+const logos = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10].map((a, i) => ({
+  src: a.url,
+  alt: `Cliente ${i + 1}`,
+}));
 
 export function ClientsCarousel() {
-  const loop = [...clientes, ...clientes];
+  const loop = [...logos, ...logos];
 
   return (
     <section className="border-y border-border bg-secondary py-16">
@@ -35,16 +38,19 @@ export function ClientsCarousel() {
               "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           }}
         >
-          <div className="flex w-max animate-[marquee_35s_linear_infinite] gap-4 sm:gap-6">
-            {loop.map((nome, i) => (
+          <div className="flex w-max animate-[marquee_40s_linear_infinite] gap-4 sm:gap-6">
+            {loop.map((logo, i) => (
               <div
-                key={`${nome}-${i}`}
-                className="flex h-20 w-44 shrink-0 items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 shadow-sm grayscale transition hover:grayscale-0 sm:h-24 sm:w-56 sm:gap-3 sm:px-6"
+                key={`${logo.alt}-${i}`}
+                className="flex h-24 w-48 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm sm:h-28 sm:w-56"
               >
-                <Building2 className="h-5 w-5 shrink-0 text-accent sm:h-6 sm:w-6" />
-                <span className="text-center font-display text-xs leading-tight text-primary sm:text-sm">
-                  {nome}
-                </span>
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
             ))}
           </div>
