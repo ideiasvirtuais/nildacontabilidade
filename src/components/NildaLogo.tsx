@@ -1,10 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import logoAsset from "../assets/nilda-logo.png.asset.json";
 
 export function NildaLogo({ className = "" }: { className?: string; variant?: "dark" | "light" }) {
   return (
     <img
-      src={logoAsset.url}
+      src="/nilda-logo.png"
       alt="Nilda Contabilidade & Jurídico"
       width={600}
       height={480}
