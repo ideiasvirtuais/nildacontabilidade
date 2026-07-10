@@ -1,0 +1,61 @@
+# ------------------------------------------------------------------
+# Nilda Contabilidade — Static hosting on KingHost (Apache)
+# ------------------------------------------------------------------
+
+# SPA fallback: serve index.html for client-side routes
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # Never rewrite real files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  # Everything else → index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# MIME types (defensive; KingHost usually already knows these)
+<IfModule mod_mime.c>
+  AddType image/svg+xml           .svg
+  AddType image/x-icon            .ico
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# Cache policy
+<IfModule mod_headers.c>
+  # HTML: never cache — always get fresh routes/metadata
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # Favicons & touch icons: short cache + revalidation so a new deploy is picked up quickly
+  <FilesMatch "^(favicon.*\.(png|ico|svg)|apple-touch-icon.*\.png|site\.webmanifest)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+
+  # Fingerprinted build assets (Vite emits hashed filenames): cache forever
+  <FilesMatch "\.(js|css|woff2?|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Other images: 7 days
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Custom error pages served by the SPA
+ErrorDocument 404 /index.html
