@@ -92,22 +92,47 @@ jobs:
           # Opcao para limpar arquivos antigos da branch 'stable-website'
           clean: true
 
-      # 7. Envia os arquivos buildados para a KingHost via FTP
-      - name: "Deploy FTP para KingHost"
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # 7. Envia os arquivos buildados para a KingHost via FTP (com retry e logs verbosos)
+      - name: "Deploy FTP para KingHost (com retry)"
+        id: ftp-deploy
+        uses: nick-fields/retry@v3
         with:
-          server: ${{ secrets.KINGHOST_FTP_HOST }}
-          username: ${{ secrets.KINGHOST_FTP_USER }}
-          password: ${{ secrets.KINGHOST_FTP_PASS }}
-          local-dir: ${{ steps.locate-shell.outputs.deploy_dir }}/
-          server-dir: ${{ secrets.KINGHOST_FTP_DIR }}
-          protocol: ftp
-          port: 21
-          # Preserva arquivos que não estão no build (ex.: uploads do usuário)
-          dangerous-clean-slate: false
-          # Ignora arquivos que não devem ir para produção
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/.DS_Store
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_wait_seconds: 30
+          retry_on: error
+          on_retry_command: echo "::warning::Tentativa de FTP falhou. Aguardando antes de tentar novamente..."
+          command: |
+            echo "::group::Tentativa de deploy FTP para KingHost"
+            echo "Diretório local: ${{ steps.locate-shell.outputs.deploy_dir }}/"
+            echo "Diretório remoto: ${{ secrets.KINGHOST_FTP_DIR }}"
+            echo "Servidor: ${{ secrets.KINGHOST_FTP_HOST }}"
+            echo "Iniciando em: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "::endgroup::"
+
+            npx --yes @samkirkland/ftp-deploy@4.3.5 \
+              --server "${{ secrets.KINGHOST_FTP_HOST }}" \
+              --username "${{ secrets.KINGHOST_FTP_USER }}" \
+              --password "${{ secrets.KINGHOST_FTP_PASS }}" \
+              --local-dir "${{ steps.locate-shell.outputs.deploy_dir }}/" \
+              --server-dir "${{ secrets.KINGHOST_FTP_DIR }}" \
+              --protocol ftp \
+              --port 21 \
+              --timeout 60000 \
+              --log-level verbose \
+              --exclude "**/.git*" \
+              --exclude "**/.git*/**" \
+              --exclude "**/node_modules/**" \
+              --exclude "**/.DS_Store"
+
+            echo "Deploy FTP concluído em: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+      # 7.1. Log final de status (roda mesmo se o step anterior falhar)
+      - name: "Resumo do Deploy FTP"
+        if: always()
+        run: |
+          if [ "${{ steps.ftp-deploy.outcome }}" = "success" ]; then
+            echo "::notice::✅ Deploy FTP concluído com sucesso após ${{ steps.ftp-deploy.outputs.total_attempts || '1' }} tentativa(s)."
+          else
+            echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões da KingHost)."
+          fi
