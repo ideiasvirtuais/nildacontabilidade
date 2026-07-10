@@ -95,3 +95,18 @@ jobs:
           folder: ${{ steps.locate-shell.outputs.deploy_dir }}
           # Opcao para limpar arquivos antigos da branch 'stable-website'
           clean: true
+
+      # 7. Envia os arquivos buildados para a KingHost via FTP
+      - name: "Deploy FTP para a KingHost"
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.KINGHOST_FTP_HOST }}
+          username: ${{ secrets.KINGHOST_FTP_USER }}
+          password: ${{ secrets.KINGHOST_FTP_PASSWORD }}
+          server-dir: ${{ secrets.KINGHOST_FTP_DIR }}
+          local-dir: ./${{ steps.locate-shell.outputs.deploy_dir }}/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
