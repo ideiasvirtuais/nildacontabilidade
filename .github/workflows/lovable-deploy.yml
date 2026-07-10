@@ -120,6 +120,7 @@ jobs:
               --port 21 \
               --timeout 60000 \
               --log-level verbose \
+              --dangerous-clean-slate true \
               --exclude "**/.git*" \
               --exclude "**/.git*/**" \
               --exclude "**/node_modules/**" \
