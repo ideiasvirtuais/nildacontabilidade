@@ -34,18 +34,22 @@ export function SiteHeader() {
           <NildaLogo className="h-10 w-auto sm:h-12 md:h-14 lg:h-16" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {nav.map((n) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              className="text-sm text-muted-foreground transition-colors hover:text-primary"
-              activeProps={{ className: "text-primary font-medium" }}
-              activeOptions={{ exact: n.to === "/" }}
-            >
-              {n.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-6 md:flex lg:gap-8">
+          {nav.map((n) => {
+            const Icon = n.icon;
+            return (
+              <Link
+                key={n.to}
+                to={n.to}
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                activeProps={{ className: "text-primary font-medium" }}
+                activeOptions={{ exact: n.to === "/" }}
+              >
+                <Icon className="h-4 w-4" aria-hidden="true" />
+                {n.label}
+              </Link>
+            );
+          })}
           <a
             href="tel:+553135314004"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-transform hover:-translate-y-0.5"
