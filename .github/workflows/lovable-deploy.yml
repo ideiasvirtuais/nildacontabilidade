@@ -176,3 +176,56 @@ jobs:
           else
             echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões da KingHost)."
           fi
+
+      # 8. Verificação pós-deploy: garante que os favicons são servidos como imagem
+      #    (não caindo no SPA fallback com content-type text/html)
+      - name: "Verificar favicons pós-deploy (falha se content-type=text/html)"
+        if: steps.ftp-deploy.outcome == 'success'
+        env:
+          VERIFY_BASE_URL: ${{ secrets.KINGHOST_VERIFY_URL || 'https://nildacontabilidade.com.br' }}
+        run: |
+          set -u
+          echo "Base URL de verificação: $VERIFY_BASE_URL"
+
+          # Pequena espera para propagação (cache/CDN da hospedagem)
+          sleep 10
+
+          paths=(
+            "/favicon-32x32.png"
+            "/apple-touch-icon.png"
+          )
+
+          failed=0
+          for p in "${paths[@]}"; do
+            url="${VERIFY_BASE_URL%/}$p"
+            echo "::group::Verificando $url"
+            # -L segue redirects; -f não é usado para poder inspecionar respostas não-2xx
+            headers=$(curl -sSIL --max-time 30 "$url" || true)
+            echo "$headers"
+
+            # Pega o último content-type (após redirects) e o último status HTTP
+            ctype=$(echo "$headers" | awk 'BEGIN{IGNORECASE=1}/^content-type:/{v=$0} END{print v}' | tr -d '\r' | sed 's/^[Cc]ontent-[Tt]ype:[[:space:]]*//')
+            status=$(echo "$headers" | awk '/^HTTP\//{s=$2} END{print s}')
+
+            echo "Status: ${status:-desconhecido}"
+            echo "Content-Type: ${ctype:-desconhecido}"
+
+            if [ -z "$status" ] || [ "$status" -ge 400 ] 2>/dev/null; then
+              echo "::error::$url retornou status HTTP $status."
+              failed=1
+            elif echo "$ctype" | grep -qi 'text/html'; then
+              echo "::error::$url está servindo text/html (SPA fallback) em vez de image/*. Deploy não entregou o arquivo real."
+              failed=1
+            elif ! echo "$ctype" | grep -qi '^image/'; then
+              echo "::warning::$url retornou content-type inesperado ($ctype). Esperado image/*."
+            else
+              echo "::notice::✅ $url OK ($ctype)"
+            fi
+            echo "::endgroup::"
+          done
+
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::❌ Verificação pós-deploy falhou: pelo menos um favicon não está sendo servido como imagem."
+            exit 1
+          fi
+          echo "::notice::✅ Todos os favicons verificados retornam content-type de imagem."
