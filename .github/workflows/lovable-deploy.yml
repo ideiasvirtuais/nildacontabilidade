@@ -16,8 +16,8 @@ on:
       reset_sync_state:
         description: "Apagar .ftp-deploy-sync-state.json remoto antes do deploy (força re-envio completo, corrige uploads ignorados)."
         type: boolean
-        required: false
-        default: false
+        required: true
+        default: true
 
 # Define permissoes para o GITHUB_TOKEN
 # A permissao 'write' e necessaria para fazer push para a branch
