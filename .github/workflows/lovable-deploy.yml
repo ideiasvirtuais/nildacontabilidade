@@ -292,7 +292,6 @@ jobs:
 
       - name: "Deploy FTP para KingHost (com retry)"
         if: github.event.inputs.dry_run != 'true'
-        if: github.event.inputs.dry_run != 'true'
         id: ftp-deploy
         uses: nick-fields/retry@v3
         with:
