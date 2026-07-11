@@ -339,55 +339,94 @@ jobs:
             echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões da KingHost)."
           fi
 
-      # 8. Verificação pós-deploy: garante que os favicons são servidos como imagem
-      #    (não caindo no SPA fallback com content-type text/html)
-      - name: "Verificar favicons pós-deploy (falha se content-type=text/html)"
+      # 7.5. Verifica via FTP que os favicons realmente aterrissaram no diretório remoto
+      #      após o upload (comparando tamanho local vs remoto).
+      - name: "Validar presença dos favicons no FTP remoto (pós-deploy)"
+        if: steps.ftp-deploy.outcome == 'success'
+        env:
+          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
+          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
+          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
+          LOCAL_DIR: ${{ steps.locate-shell.outputs.deploy_dir }}
+        run: |
+          set -u
+          FILES=("favicon-32x32.png" "apple-touch-icon.png")
+
+          echo "::group::Listagem remota dos favicons"
+          REMOTE_LS=$(lftp -u "$FTP_USER","$FTP_PASS" -e "
+            set ssl:verify-certificate no;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            open -p 21 $FTP_HOST;
+            cd \"$FTP_DIR\";
+            ls -la ${FILES[*]};
+            bye;
+          " 2>&1)
+          echo "$REMOTE_LS"
+          echo "::endgroup::"
+
+          ftp_failed=0
+          for f in "${FILES[@]}"; do
+            if ! echo "$REMOTE_LS" | grep -qE "[[:space:]]${f}$"; then
+              echo "::error::Arquivo $f NÃO encontrado em $FTP_DIR após o deploy."
+              ftp_failed=1
+              continue
+            fi
+            # Extrai o tamanho remoto (5ª coluna do ls -la típico)
+            remote_size=$(echo "$REMOTE_LS" | awk -v f="$f" '$NF==f {print $5; exit}')
+            local_size=$(stat -c%s "$LOCAL_DIR/$f" 2>/dev/null || echo "?")
+            echo "  $f: local=${local_size} bytes | remoto=${remote_size:-?} bytes"
+            if [ -n "$remote_size" ] && [ "$remote_size" != "$local_size" ]; then
+              echo "::error::Tamanho divergente para $f (local=$local_size, remoto=$remote_size)."
+              ftp_failed=1
+            fi
+          done
+
+          if [ "$ftp_failed" -ne 0 ]; then
+            echo "::error::❌ Validação FTP pós-deploy falhou."
+            exit 1
+          fi
+          echo "::notice::✅ Favicons presentes no diretório remoto com o tamanho esperado."
+
+      # 8. Verificação HTTP pós-deploy: exige content-type image/png exatamente
+      - name: "Verificar favicons via HTTP (exige content-type image/png)"
         if: steps.ftp-deploy.outcome == 'success'
         env:
           VERIFY_BASE_URL: ${{ secrets.KINGHOST_VERIFY_URL || 'https://nildacontabilidade.com.br' }}
         run: |
           set -u
           echo "Base URL de verificação: $VERIFY_BASE_URL"
+          sleep 10  # propagação/cache
 
-          # Pequena espera para propagação (cache/CDN da hospedagem)
-          sleep 10
-
-          paths=(
-            "/favicon-32x32.png"
-            "/apple-touch-icon.png"
-          )
+          paths=("/favicon-32x32.png" "/apple-touch-icon.png")
 
           failed=0
           for p in "${paths[@]}"; do
             url="${VERIFY_BASE_URL%/}$p"
             echo "::group::Verificando $url"
-            # -L segue redirects; -f não é usado para poder inspecionar respostas não-2xx
             headers=$(curl -sSIL --max-time 30 "$url" || true)
             echo "$headers"
 
-            # Pega o último content-type (após redirects) e o último status HTTP
-            ctype=$(echo "$headers" | awk 'BEGIN{IGNORECASE=1}/^content-type:/{v=$0} END{print v}' | tr -d '\r' | sed 's/^[Cc]ontent-[Tt]ype:[[:space:]]*//')
+            ctype=$(echo "$headers" | awk 'BEGIN{IGNORECASE=1}/^content-type:/{v=$0} END{print v}' | tr -d '\r' | sed 's/^[Cc]ontent-[Tt]ype:[[:space:]]*//' | awk -F';' '{print tolower($1)}' | tr -d '[:space:]')
             status=$(echo "$headers" | awk '/^HTTP\//{s=$2} END{print s}')
 
-            echo "Status: ${status:-desconhecido}"
-            echo "Content-Type: ${ctype:-desconhecido}"
+            echo "Status: ${status:-desconhecido} | Content-Type: ${ctype:-desconhecido}"
 
             if [ -z "$status" ] || [ "$status" -ge 400 ] 2>/dev/null; then
               echo "::error::$url retornou status HTTP $status."
               failed=1
-            elif echo "$ctype" | grep -qi 'text/html'; then
-              echo "::error::$url está servindo text/html (SPA fallback) em vez de image/*. Deploy não entregou o arquivo real."
+            elif [ "$ctype" != "image/png" ]; then
+              echo "::error::$url content-type='$ctype' — esperado exatamente 'image/png' (text/html indica SPA fallback; outro image/* indica servidor mal configurado)."
               failed=1
-            elif ! echo "$ctype" | grep -qi '^image/'; then
-              echo "::warning::$url retornou content-type inesperado ($ctype). Esperado image/*."
             else
-              echo "::notice::✅ $url OK ($ctype)"
+              echo "::notice::✅ $url OK (image/png)"
             fi
             echo "::endgroup::"
           done
 
           if [ "$failed" -ne 0 ]; then
-            echo "::error::❌ Verificação pós-deploy falhou: pelo menos um favicon não está sendo servido como imagem."
+            echo "::error::❌ Validação HTTP pós-deploy falhou: favicons não estão sendo servidos como image/png."
             exit 1
           fi
-          echo "::notice::✅ Todos os favicons verificados retornam content-type de imagem."
+          echo "::notice::✅ Todos os favicons retornam content-type image/png."
