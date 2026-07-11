@@ -13,6 +13,11 @@ on:
         type: boolean
         required: false
         default: false
+      reset_sync_state:
+        description: "Apagar .ftp-deploy-sync-state.json remoto antes do deploy (força re-envio completo, corrige uploads ignorados)."
+        type: boolean
+        required: false
+        default: false
 
 # Define permissoes para o GITHUB_TOKEN
 # A permissao 'write' e necessaria para fazer push para a branch
@@ -256,7 +261,37 @@ jobs:
             echo "::notice::🧪 DRY-RUN concluído. Nenhum arquivo foi alterado na KingHost. Rode o workflow novamente sem 'dry_run' para efetivar o deploy."
           fi
 
+      # 6.97. Se solicitado, apaga o .ftp-deploy-sync-state.json remoto para
+      #       forçar o próximo deploy a reenviar tudo (o ftp-deploy usa esse
+      #       arquivo como cache; se ele estiver desatualizado, uploads novos
+      #       podem ser ignorados silenciosamente).
+      - name: "Resetar estado remoto do ftp-deploy (.ftp-deploy-sync-state.json)"
+        if: github.event.inputs.dry_run != 'true' && github.event.inputs.reset_sync_state == 'true'
+        env:
+          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
+          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
+          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
+        run: |
+          echo "::group::Removendo .ftp-deploy-sync-state.json remoto"
+          lftp -u "$FTP_USER","$FTP_PASS" -e "
+            set ssl:verify-certificate no;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            open -p 21 $FTP_HOST;
+            cd \"$FTP_DIR\" || (echo '::error::Não foi possível acessar $FTP_DIR'; exit 1);
+            echo '--- Antes: ---';
+            ls -la .ftp-deploy-sync-state.json 2>&1 || echo '(arquivo não existe — nada a fazer)';
+            rm -f .ftp-deploy-sync-state.json;
+            echo '--- Depois: ---';
+            ls -la .ftp-deploy-sync-state.json 2>&1 || echo '(removido com sucesso)';
+            bye;
+          " && echo "::notice::🧹 Estado de sincronização remoto foi resetado. Próximo deploy reenviará tudo." \
+             || echo "::warning::Falha ao remover .ftp-deploy-sync-state.json — o deploy seguirá mesmo assim."
+          echo "::endgroup::"
+
       - name: "Deploy FTP para KingHost (com retry)"
+        if: github.event.inputs.dry_run != 'true'
         if: github.event.inputs.dry_run != 'true'
         id: ftp-deploy
         uses: nick-fields/retry@v3
