@@ -92,34 +92,96 @@ jobs:
           # Opcao para limpar arquivos antigos da branch 'stable-website'
           clean: true
 
-      # 6.9. Inspeciona o diretório remoto ANTES do deploy para confirmar destino correto
+      # 6.8. Detecta automaticamente a pasta pública na KingHost (ex.: /www)
+      #      Se KINGHOST_FTP_DIR estiver definido, valida-o; caso contrário,
+      #      tenta candidatos comuns. Aborta com mensagem clara se nada servir.
+      - name: "Detectar pasta pública remota na KingHost"
+        id: detect-public-dir
+        env:
+          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
+          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
+          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_DIR_SECRET: ${{ secrets.KINGHOST_FTP_DIR }}
+        run: |
+          set -u
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+          if [ -z "${FTP_HOST:-}" ] || [ -z "${FTP_USER:-}" ] || [ -z "${FTP_PASS:-}" ]; then
+            echo "::error::Secrets KINGHOST_FTP_HOST/USER/PASS ausentes. Configure-os em Settings → Secrets."
+            exit 1
+          fi
+
+          # Lista candidatos: primeiro o secret (se houver), depois padrões da KingHost.
+          CANDIDATES=()
+          if [ -n "${FTP_DIR_SECRET:-}" ]; then
+            CANDIDATES+=("$FTP_DIR_SECRET")
+          fi
+          CANDIDATES+=("/www" "www" "/htdocs" "htdocs" "/public_html" "public_html" "/httpdocs" "/")
+
+          probe() {
+            local dir="$1"
+            lftp -u "$FTP_USER","$FTP_PASS" -e "
+              set ssl:verify-certificate no;
+              set ftp:ssl-force true;
+              set ftp:ssl-protect-data true;
+              set net:max-retries 1;
+              set net:timeout 20;
+              open -p 21 $FTP_HOST;
+              cd \"$dir\";
+              pwd;
+              bye;
+            " 2>&1
+          }
+
+          DETECTED=""
+          for c in "${CANDIDATES[@]}"; do
+            echo "::group::Testando candidato: $(printf %s "$c" | sha1sum | cut -c1-8) (len=${#c})"
+            OUT=$(probe "$c" || true)
+            echo "$OUT"
+            # Aceita se o cd não retornou erro (procura por linha começando com /)
+            if echo "$OUT" | grep -Eq '^/'; then
+              RESOLVED=$(echo "$OUT" | grep -E '^/' | tail -n1 | tr -d '\r')
+              echo "✅ Candidato acessível. pwd resolvido → $RESOLVED"
+              DETECTED="$c"
+              echo "resolved_pwd=$RESOLVED" >> "$GITHUB_OUTPUT"
+              echo "::endgroup::"
+              break
+            else
+              echo "❌ Candidato não acessível."
+            fi
+            echo "::endgroup::"
+          done
+
+          if [ -z "$DETECTED" ]; then
+            echo "::error::❌ Não foi possível localizar a pasta pública na KingHost."
+            echo "::error::Candidatos testados: KINGHOST_FTP_DIR (se definido), /www, www, /htdocs, htdocs, /public_html, public_html, /httpdocs, /."
+            echo "::error::Ação: verifique credenciais/host, ou defina o secret KINGHOST_FTP_DIR com o caminho absoluto correto (ex.: /www)."
+            exit 1
+          fi
+
+          echo "public_dir=$DETECTED" >> "$GITHUB_OUTPUT"
+          echo "::notice::Pasta pública detectada (hash sha1-8): $(printf %s "$DETECTED" | sha1sum | cut -c1-8) — usada como server-dir do deploy."
+
+      # 6.9. Inspeciona o diretório remoto detectado ANTES do deploy
       - name: "Inspecionar diretório remoto na KingHost (pré-deploy)"
         env:
           FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
           FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
           FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
-          FTP_DIR: ${{ secrets.KINGHOST_FTP_DIR }}
+          FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
-
-          echo "::group::Configuração do destino FTP"
-          # GitHub mascara o valor exato do secret, então imprimimos características
-          # que ajudam a confirmar sem expor o valor no log.
-          echo "Comprimento de KINGHOST_FTP_DIR: ${#FTP_DIR} caracteres"
-          echo "Começa com '/': $(case "$FTP_DIR" in /*) echo sim;; *) echo NÃO - caminho relativo!;; esac)"
-          echo "Termina com '/': $(case "$FTP_DIR" in */) echo sim;; *) echo não;; esac)"
-          echo "Contém 'www': $(case "$FTP_DIR" in *www*) echo sim;; *) echo NÃO - verifique se é a raiz pública;; esac)"
-          echo "Hash SHA1 (para comparar entre runs sem revelar): $(printf %s "$FTP_DIR" | sha1sum | cut -c1-12)"
+          echo "::group::Destino resolvido"
+          echo "Comprimento: ${#FTP_DIR} | começa com '/': $(case "$FTP_DIR" in /*) echo sim;; *) echo não;; esac) | contém 'www': $(case "$FTP_DIR" in *www*) echo sim;; *) echo não;; esac)"
+          echo "SHA1-12: $(printf %s "$FTP_DIR" | sha1sum | cut -c1-12)"
           echo "::endgroup::"
 
-          echo "::group::pwd remoto e listagem do diretório configurado"
+          echo "::group::Listagem do diretório detectado"
           lftp -u "$FTP_USER","$FTP_PASS" -e "
             set ssl:verify-certificate no;
             set ftp:ssl-force true;
             set ftp:ssl-protect-data true;
             open -p 21 $FTP_HOST;
-            pwd;
-            cd \"$FTP_DIR\" || (echo '::error::Não foi possível acessar KINGHOST_FTP_DIR'; exit 1);
+            cd \"$FTP_DIR\" || (echo '::error::Não foi possível acessar o diretório detectado'; exit 1);
             pwd;
             echo '--- Conteúdo atual (antes do deploy): ---';
             ls -la;
@@ -128,7 +190,7 @@ jobs:
             echo '--- .htaccess presente? ---';
             ls -la .htaccess 2>&1 || true;
             bye;
-          " || echo "::warning::Falha ao inspecionar diretório remoto — verifique host/credenciais/porta."
+          " || echo "::warning::Falha ao inspecionar diretório remoto."
           echo "::endgroup::"
 
 
@@ -144,7 +206,7 @@ jobs:
           command: |
             echo "::group::Tentativa de deploy FTP para KingHost"
             echo "Diretório local: ${{ steps.locate-shell.outputs.deploy_dir }}/"
-            echo "Diretório remoto: ${{ secrets.KINGHOST_FTP_DIR }}"
+            echo "Diretório remoto (auto-detectado): ${{ steps.detect-public-dir.outputs.public_dir }}"
             echo "Servidor: ${{ secrets.KINGHOST_FTP_HOST }}"
             echo "Iniciando em: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             echo "::endgroup::"
@@ -154,7 +216,7 @@ jobs:
               --username "${{ secrets.KINGHOST_FTP_USER }}" \
               --password "${{ secrets.KINGHOST_FTP_PASS }}" \
               --local-dir "${{ steps.locate-shell.outputs.deploy_dir }}/" \
-              --server-dir "${{ secrets.KINGHOST_FTP_DIR }}" \
+              --server-dir "${{ steps.detect-public-dir.outputs.public_dir }}" \
               --protocol ftps \
               --port 21 \
               --timeout 60000 \
