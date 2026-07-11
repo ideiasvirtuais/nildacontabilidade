@@ -5,8 +5,14 @@ on:
   push:
     branches:
       - main
-  # Permite que você rode este workflow manualmente pela aba Actions
+  # Permite rodar este workflow manualmente pela aba Actions (com opção de dry-run)
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry-run: só simula o deploy FTP (lista o que seria enviado/removido) e não altera a KingHost."
+        type: boolean
+        required: false
+        default: false
 
 # Define permissoes para o GITHUB_TOKEN
 # A permissao 'write' e necessaria para fazer push para a branch
