@@ -200,7 +200,64 @@ jobs:
           echo "::endgroup::"
 
 
+      # 6.95. Dry-run: compara o build local com o remoto e lista arquivos que
+      #       SERIAM enviados/atualizados/removidos, SEM alterar nada na KingHost.
+      #       Roda sempre; se o usuário disparou o workflow com dry_run=true,
+      #       o step de deploy real é pulado logo abaixo.
+      - name: "Dry-run FTP (simulação — não altera a KingHost)"
+        id: ftp-dry-run
+        env:
+          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
+          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
+          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
+          LOCAL_DIR: ${{ steps.locate-shell.outputs.deploy_dir }}
+        run: |
+          set -u
+          echo "::group::Dry-run — configuração"
+          echo "Local:  $LOCAL_DIR/"
+          echo "Remoto: $FTP_DIR (SHA1-12 $(printf %s "$FTP_DIR" | sha1sum | cut -c1-12))"
+          echo "Modo:   ${{ github.event.inputs.dry_run == 'true' && 'DRY-RUN (deploy real será pulado)' || 'preview antes do deploy real' }}"
+          echo "::endgroup::"
+
+          echo "::group::lftp mirror --dry-run (upload + delete-first, mesmas flags do deploy)"
+          # Usa exatamente o mesmo conjunto de exclusões e o mesmo modo espelho
+          # (--dangerous-clean-slate equivale a mirror -R --delete).
+          lftp -u "$FTP_USER","$FTP_PASS" -e "
+            set ssl:verify-certificate no;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set net:timeout 30;
+            set net:max-retries 2;
+            open -p 21 $FTP_HOST;
+            lcd \"$LOCAL_DIR\";
+            cd \"$FTP_DIR\";
+            mirror --reverse --delete --verbose --dry-run \
+              --exclude-glob .git* \
+              --exclude-glob node_modules/ \
+              --exclude-glob .DS_Store;
+            bye;
+          " | tee /tmp/ftp-dry-run.log || {
+            echo "::error::Falha ao executar dry-run via lftp."
+            exit 1
+          }
+          echo "::endgroup::"
+
+          echo "::group::Resumo do dry-run"
+          uploads=$(grep -cE '^(Transferring file|put )' /tmp/ftp-dry-run.log || true)
+          deletes=$(grep -cE '^(Removing (old file|old directory)|rm )' /tmp/ftp-dry-run.log || true)
+          mkdirs=$(grep -cE '^(Making directory|mkdir )' /tmp/ftp-dry-run.log || true)
+          echo "Arquivos que SERIAM enviados/atualizados: ${uploads:-0}"
+          echo "Arquivos/pastas que SERIAM removidos:     ${deletes:-0}"
+          echo "Pastas que SERIAM criadas:                ${mkdirs:-0}"
+          echo "::endgroup::"
+
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "::notice::🧪 DRY-RUN concluído. Nenhum arquivo foi alterado na KingHost. Rode o workflow novamente sem 'dry_run' para efetivar o deploy."
+          fi
+
       - name: "Deploy FTP para KingHost (com retry)"
+        if: github.event.inputs.dry_run != 'true'
         id: ftp-deploy
         uses: nick-fields/retry@v3
         with:
