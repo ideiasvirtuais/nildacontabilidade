@@ -206,7 +206,7 @@ jobs:
           command: |
             echo "::group::Tentativa de deploy FTP para KingHost"
             echo "Diretório local: ${{ steps.locate-shell.outputs.deploy_dir }}/"
-            echo "Diretório remoto: ${{ secrets.KINGHOST_FTP_DIR }}"
+            echo "Diretório remoto (auto-detectado): ${{ steps.detect-public-dir.outputs.public_dir }}"
             echo "Servidor: ${{ secrets.KINGHOST_FTP_HOST }}"
             echo "Iniciando em: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             echo "::endgroup::"
@@ -216,7 +216,7 @@ jobs:
               --username "${{ secrets.KINGHOST_FTP_USER }}" \
               --password "${{ secrets.KINGHOST_FTP_PASS }}" \
               --local-dir "${{ steps.locate-shell.outputs.deploy_dir }}/" \
-              --server-dir "${{ secrets.KINGHOST_FTP_DIR }}" \
+              --server-dir "${{ steps.detect-public-dir.outputs.public_dir }}" \
               --protocol ftps \
               --port 21 \
               --timeout 60000 \
