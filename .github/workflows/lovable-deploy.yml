@@ -296,7 +296,9 @@ jobs:
       - name: "Resumo do Deploy FTP"
         if: always()
         run: |
-          if [ "${{ steps.ftp-deploy.outcome }}" = "success" ]; then
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "::notice::🧪 Modo dry-run: deploy real foi pulado. Veja o resumo do step 'Dry-run FTP' acima."
+          elif [ "${{ steps.ftp-deploy.outcome }}" = "success" ]; then
             echo "::notice::✅ Deploy FTP concluído com sucesso após ${{ steps.ftp-deploy.outputs.total_attempts || '1' }} tentativa(s)."
           else
             echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões da KingHost)."
