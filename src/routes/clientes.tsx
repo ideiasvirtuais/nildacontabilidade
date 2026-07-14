@@ -1,19 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
-import betimcoop from "../assets/clients/betimcoop.jpg.asset.json";
-import rodarBrasil from "../assets/clients/rodar-brasil.jpg.asset.json";
-import sintesc from "../assets/clients/sintesc.jpg.asset.json";
-import gpgSeguros from "../assets/clients/gpg-seguros.jpg.asset.json";
-import oxGenium from "../assets/clients/ox-genium.jpg.asset.json";
-import coopertransp from "../assets/clients/coopertransp.jpg.asset.json";
-import joelmaFerraz from "../assets/clients/joelma-ferraz.jpg.asset.json";
-import angelTour from "../assets/clients/angel-tour.jpg.asset.json";
-import simocemg from "../assets/clients/simocemg.jpg.asset.json";
-import marreta from "../assets/clients/marreta.jpg.asset.json";
-import abrasil from "../assets/clients/abrasil.jpg.asset.json";
-import kamargos from "../assets/clients/kamargos.jpg.asset.json";
-import maister from "../assets/clients/maister.jpg.asset.json";
-import tca from "../assets/clients/tca.jpg.asset.json";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
@@ -30,20 +16,20 @@ export const Route = createFileRoute("/clientes")({
 });
 
 const clients = [
-  { src: betimcoop.url, name: "Betimcoop", desc: "Transporte e Logística" },
-  { src: rodarBrasil.url, name: "Rodar Brasil", desc: "Cooperativa de Transportes" },
-  { src: sintesc.url, name: "SINTESC", desc: "Sindicato dos Transportadores Escolares — RMBH" },
-  { src: simocemg.url, name: "SIMOCEMG", desc: "Sindicato dos Motoristas Cegonheiros de MG" },
-  { src: coopertransp.url, name: "Coopertransp", desc: "Transporte de Passageiros e Cargas — Nova Lima" },
-  { src: angelTour.url, name: "Angel Tour", desc: "Turismo e Transporte" },
-  { src: maister.url, name: "Maister Motores", desc: "" },
-  { src: gpgSeguros.url, name: "GPG Seguros", desc: "Corretora de Seguros" },
-  { src: tca.url, name: "TCA", desc: "Estudos, Projetos e Monitoramento Ambiental" },
-  { src: oxGenium.url, name: "Ox-Genium", desc: "" },
-  { src: marreta.url, name: "Frango do Marreta", desc: "" },
-  { src: abrasil.url, name: "Abrasil Digital Print", desc: "" },
-  { src: kamargos.url, name: "Foto Studio Kamargos", desc: "" },
-  { src: joelmaFerraz.url, name: "Joelma Ferraz", desc: "" },
+  { src: "/clients/betimcoop.jpg", name: "Betimcoop", desc: "Transporte e Logística" },
+  { src: "/clients/rodar-brasil.jpg", name: "Rodar Brasil", desc: "Cooperativa de Transportes" },
+  { src: "/clients/sintesc.jpg", name: "SINTESC", desc: "Sindicato dos Transportadores Escolares — RMBH" },
+  { src: "/clients/simocemg.jpg", name: "SIMOCEMG", desc: "Sindicato dos Motoristas Cegonheiros de MG" },
+  { src: "/clients/coopertransp.jpg", name: "Coopertransp", desc: "Transporte de Passageiros e Cargas — Nova Lima" },
+  { src: "/clients/angel-tour.jpg", name: "Angel Tour", desc: "Turismo e Transporte" },
+  { src: "/clients/maister.jpg", name: "Maister Motores", desc: "" },
+  { src: "/clients/gpg-seguros.jpg", name: "GPG Seguros", desc: "Corretora de Seguros" },
+  { src: "/clients/tca.jpg", name: "TCA", desc: "Estudos, Projetos e Monitoramento Ambiental" },
+  { src: "/clients/ox-genium.jpg", name: "Ox-Genium", desc: "" },
+  { src: "/clients/marreta.jpg", name: "Frango do Marreta", desc: "" },
+  { src: "/clients/abrasil.jpg", name: "Abrasil Digital Print", desc: "" },
+  { src: "/clients/kamargos.jpg", name: "Foto Studio Kamargos", desc: "" },
+  { src: "/clients/joelma-ferraz.jpg", name: "Joelma Ferraz", desc: "" },
 ];
 
 function Clientes() {
