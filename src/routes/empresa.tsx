@@ -112,7 +112,7 @@ function Empresa() {
             {fundadora.map((c) => (
               <li key={c.text} className="flex items-start gap-3 rounded-xl border border-border bg-background p-4">
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent">
-                  <c.icon className="h-4.5 w-4.5" />
+                  <c.icon className="h-5 w-5" />
                 </span>
                 <span className="pt-1.5 text-foreground">{c.text}</span>
               </li>

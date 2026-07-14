@@ -157,7 +157,7 @@ function Servicos() {
               {cooperativas.map((s) => (
                 <li key={s.title} className="flex gap-3 rounded-xl border border-border bg-background p-4">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent">
-                    <s.icon className="h-4.5 w-4.5" />
+                    <s.icon className="h-5 w-5" />
                   </span>
                   <div>
                     <div className="text-sm font-medium text-primary">{s.title}</div>
@@ -193,7 +193,7 @@ function Servicos() {
               {empresas.map((s) => (
                 <li key={s.title} className="flex gap-3 rounded-xl border border-border bg-background p-4">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent">
-                    <s.icon className="h-4.5 w-4.5" />
+                    <s.icon className="h-5 w-5" />
                   </span>
                   <div>
                     <div className="text-sm font-medium text-primary">{s.title}</div>
