@@ -6,13 +6,21 @@ import { ExternalLink } from "lucide-react";
 export const Route = createFileRoute("/legislacao")({
   head: () => ({
     meta: [
-      { title: "Legislação — Nilda Contabilidade" },
-      { name: "description", content: "Consulte legislações trabalhistas e fiscais organizadas por tipo e por tema." },
+      { title: "Legislação Trabalhista e Fiscal — Nilda Contabilidade" },
+      {
+        name: "description",
+        content:
+          "Consulte legislações trabalhistas, fiscais e tributárias organizadas por tipo e por tema. Fontes oficiais para cooperativas e empresas.",
+      },
+      {
+        name: "keywords",
+        content: "legislação trabalhista, legislação fiscal, CLT, FGTS, INSS, legislação para cooperativas",
+      },
       { property: "og:title", content: "Legislação — Nilda Contabilidade" },
-      { property: "og:description", content: "Legislação por tipo e por tema." },
-      { property: "og:url", content: "/legislacao" },
+      { property: "og:description", content: "Legislação por tipo e por tema — fontes oficiais." },
+      { property: "og:url", content: "https://nildacontabilidade.lovable.app/legislacao" },
     ],
-    links: [{ rel: "canonical", href: "/legislacao" }],
+    links: [{ rel: "canonical", href: "https://nildacontabilidade.lovable.app/legislacao" }],
   }),
   component: Legislacao,
 });

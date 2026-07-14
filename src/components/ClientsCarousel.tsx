@@ -12,9 +12,27 @@ import c11 from "../assets/clients/cliente-11.jpg.asset.json";
 import c12 from "../assets/clients/cliente-12.jpg.asset.json";
 import c13 from "../assets/clients/cliente-13.jpg.asset.json";
 
+// Nomes reais das cooperativas atendidas (usados como alt/legenda até
+// que as logos oficiais sejam enviadas pelo cliente).
+const clientNames = [
+  "Betimcoop",
+  "Coopitatiaiuçu",
+  "CooperlogHF",
+  "Coopersind",
+  "Coopervia",
+  "Coopertraf",
+  "Coopercarga",
+  "Coopertransp",
+  "Cootrampas",
+  "Coopercam",
+  "Coopnorte",
+  "Coopersul",
+  "Coopercentro",
+];
+
 const logos = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13].map((a, i) => ({
   src: a.url,
-  alt: `Cliente ${i + 1}`,
+  alt: clientNames[i] ?? `Cliente ${i + 1}`,
 }));
 
 export function ClientsCarousel() {
@@ -25,11 +43,15 @@ export function ClientsCarousel() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-10 text-center">
           <div className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-accent">
-            Quem confia em nós
+            Cooperativas e empresas atendidas
           </div>
           <h2 className="font-display text-3xl text-primary md:text-4xl">
-            Clientes que caminham conosco
+            Quem confia no nosso trabalho
           </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">
+            Betimcoop, Coopitatiaiuçu, CooperlogHF, Coopersind, Coopervia, Coopertraf e outras cooperativas e empresas
+            atendidas pela Nilda Contabilidade.
+          </p>
         </div>
 
         <div
@@ -46,10 +68,11 @@ export function ClientsCarousel() {
               <div
                 key={`${logo.alt}-${i}`}
                 className="flex h-24 w-48 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm sm:h-28 sm:w-56"
+                title={logo.alt}
               >
                 <img
                   src={logo.src}
-                  alt={logo.alt}
+                  alt={`Logo ${logo.alt}`}
                   loading="lazy"
                   decoding="async"
                   className="max-h-full max-w-full object-contain"

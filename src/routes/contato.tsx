@@ -6,13 +6,22 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 export const Route = createFileRoute("/contato")({
   head: () => ({
     meta: [
-      { title: "Contato — Nilda Contabilidade" },
-      { name: "description", content: "Fale com a Nilda Contabilidade em Betim/MG. Telefones, e-mails e endereço." },
+      { title: "Contato — Nilda Contabilidade | Betim/MG" },
+      {
+        name: "description",
+        content:
+          "Fale com a Nilda Contabilidade em Betim/MG. Telefones, WhatsApp, e-mails e endereço. Atendimento contábil para cooperativas e empresas em todo o Brasil.",
+      },
+      {
+        name: "keywords",
+        content:
+          "contato contabilidade Betim, escritório contábil Belo Horizonte, whatsapp Nilda Contabilidade, contabilidade cooperativas contato",
+      },
       { property: "og:title", content: "Contato — Nilda Contabilidade" },
-      { property: "og:description", content: "Endereço, telefones e e-mails." },
-      { property: "og:url", content: "/contato" },
+      { property: "og:description", content: "Endereço, telefones, WhatsApp e e-mails." },
+      { property: "og:url", content: "https://nildacontabilidade.lovable.app/contato" },
     ],
-    links: [{ rel: "canonical", href: "/contato" }],
+    links: [{ rel: "canonical", href: "https://nildacontabilidade.lovable.app/contato" }],
   }),
   component: Contato,
 });
