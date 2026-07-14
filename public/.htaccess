@@ -1,61 +1,133 @@
 # ------------------------------------------------------------------
-# Nilda Contabilidade — Static hosting on KingHost (Apache)
+# Nilda Contabilidade — Static hosting on cPanel/Apache
 # ------------------------------------------------------------------
 
+# Follow symlinks (required for RewriteRule on some cPanel hosts)
+Options +FollowSymLinks -MultiViews
+
+# Default charset
+AddDefaultCharset UTF-8
+
+# ------------------------------------------------------------------
 # SPA fallback: serve index.html for client-side routes
+# ------------------------------------------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
   # Never rewrite real files or directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
+
   # Everything else → index.html
   RewriteRule ^ index.html [L]
 </IfModule>
 
-# MIME types (defensive; KingHost usually already knows these)
+# ------------------------------------------------------------------
+# MIME types (defensive)
+# ------------------------------------------------------------------
 <IfModule mod_mime.c>
-  AddType image/svg+xml           .svg
-  AddType image/x-icon            .ico
+  AddType image/svg+xml             .svg
+  AddType image/x-icon              .ico
+  AddType image/webp                .webp
+  AddType image/avif                .avif
   AddType application/manifest+json .webmanifest
+  AddType application/javascript    .js .mjs
+  AddType text/css                  .css
+  AddType font/woff2                .woff2
+  AddType font/woff                 .woff
 </IfModule>
 
-# Cache policy
+# ------------------------------------------------------------------
+# ETag: disable (we control freshness via Cache-Control)
+# Prevents stale 304 responses after a new deploy.
+# ------------------------------------------------------------------
+FileETag None
 <IfModule mod_headers.c>
-  # HTML: never cache — always get fresh routes/metadata
+  Header unset ETag
+</IfModule>
+
+# ------------------------------------------------------------------
+# Cache policy (mod_headers)
+# `Header always set` ensures headers are sent on 200 AND on 404/redirects
+# (critical because ErrorDocument 404 serves index.html).
+# ------------------------------------------------------------------
+<IfModule mod_headers.c>
+  # HTML: NEVER cache — always fetch fresh routes/metadata after deploy
   <FilesMatch "\.(html|htm)$">
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires "0"
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+    Header unset ETag
+    Header unset Last-Modified
   </FilesMatch>
 
-  # Favicons & touch icons: short cache + revalidation so a new deploy is picked up quickly
-  <FilesMatch "^(favicon.*\.(png|ico|svg)|apple-touch-icon.*\.png|site\.webmanifest)$">
-    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  # Favicons, touch icons, manifest: short cache so a new deploy is picked up quickly
+  <FilesMatch "^(favicon.*\.(png|ico|svg)|apple-touch-icon.*\.png|site\.webmanifest|manifest\.json)$">
+    Header always set Cache-Control "public, max-age=3600, must-revalidate"
   </FilesMatch>
 
   # Fingerprinted build assets (Vite emits hashed filenames): cache forever
-  <FilesMatch "\.(js|css|woff2?|ttf|otf|eot)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+  <FilesMatch "\.(js|mjs|css|woff2?|ttf|otf|eot|map)$">
+    Header always set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
-  # Other images: 7 days
-  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif)$">
-    Header set Cache-Control "public, max-age=604800"
+  # Other images (including nilda-logo.png): 7 days, revalidate
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg)$">
+    Header always set Cache-Control "public, max-age=604800, must-revalidate"
   </FilesMatch>
+
+  # Always advertise Vary so proxies/CDNs cache per-encoding correctly
+  Header append Vary "Accept-Encoding"
 </IfModule>
 
-# Gzip compression
+# ------------------------------------------------------------------
+# Fallback cache via mod_expires (in case mod_headers isn't loaded)
+# ------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                              "access plus 1 hour"
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType text/css                      "access plus 1 year"
+  ExpiresByType application/javascript        "access plus 1 year"
+  ExpiresByType application/x-javascript      "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+  ExpiresByType image/png                     "access plus 7 days"
+  ExpiresByType image/jpeg                    "access plus 7 days"
+  ExpiresByType image/webp                    "access plus 7 days"
+  ExpiresByType image/svg+xml                 "access plus 7 days"
+  ExpiresByType image/x-icon                  "access plus 1 hour"
+  ExpiresByType application/manifest+json     "access plus 1 hour"
+</IfModule>
+
+# ------------------------------------------------------------------
+# Compression
+# ------------------------------------------------------------------
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css \
+    text/javascript application/javascript application/x-javascript \
+    application/json application/xml application/rss+xml \
+    image/svg+xml font/woff font/woff2 application/font-woff
 </IfModule>
 
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css \
+    text/javascript application/javascript application/json \
+    image/svg+xml font/woff2
+</IfModule>
+
+# ------------------------------------------------------------------
 # Security headers
+# ------------------------------------------------------------------
 <IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
 
+# ------------------------------------------------------------------
 # Custom error pages served by the SPA
+# ------------------------------------------------------------------
 ErrorDocument 404 /index.html
