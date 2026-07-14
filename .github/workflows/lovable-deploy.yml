@@ -106,19 +106,19 @@ jobs:
       # 6.8. Detecta automaticamente a pasta pública na KingHost (ex.: /www)
       #      Se KINGHOST_FTP_DIR estiver definido, valida-o; caso contrário,
       #      tenta candidatos comuns. Aborta com mensagem clara se nada servir.
-      - name: "Detectar pasta pública remota na KingHost"
+      - name: "Detectar pasta pública remota no cPanel"
         id: detect-public-dir
         env:
-          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
-          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
-          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
-          FTP_DIR_SECRET: ${{ secrets.KINGHOST_FTP_DIR }}
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
+          FTP_DIR_SECRET: ${{ secrets.CPANEL_FTP_DIR }}
         run: |
           set -u
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
           if [ -z "${FTP_HOST:-}" ] || [ -z "${FTP_USER:-}" ] || [ -z "${FTP_PASS:-}" ]; then
-            echo "::error::Secrets KINGHOST_FTP_HOST/USER/PASS ausentes. Configure-os em Settings → Secrets."
+            echo "::error::Secrets CPANEL_FTP_HOST/USER/PASS ausentes. Configure-os em Settings → Secrets."
             exit 1
           fi
 
@@ -164,9 +164,9 @@ jobs:
           done
 
           if [ -z "$DETECTED" ]; then
-            echo "::error::❌ Não foi possível localizar a pasta pública na KingHost."
-            echo "::error::Candidatos testados: KINGHOST_FTP_DIR (se definido), /www, www, /htdocs, htdocs, /public_html, public_html, /httpdocs, /."
-            echo "::error::Ação: verifique credenciais/host, ou defina o secret KINGHOST_FTP_DIR com o caminho absoluto correto (ex.: /www)."
+            echo "::error::❌ Não foi possível localizar a pasta pública no cPanel."
+            echo "::error::Candidatos testados: CPANEL_FTP_DIR (se definido), /www, www, /htdocs, htdocs, /public_html, public_html, /httpdocs, /."
+            echo "::error::Ação: verifique credenciais/host, ou defina o secret CPANEL_FTP_DIR com o caminho absoluto correto (ex.: /public_html)."
             exit 1
           fi
 
@@ -174,11 +174,11 @@ jobs:
           echo "::notice::Pasta pública detectada (hash sha1-8): $(printf %s "$DETECTED" | sha1sum | cut -c1-8) — usada como server-dir do deploy."
 
       # 6.9. Inspeciona o diretório remoto detectado ANTES do deploy
-      - name: "Inspecionar diretório remoto na KingHost (pré-deploy)"
+      - name: "Inspecionar diretório remoto no cPanel (pré-deploy)"
         env:
-          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
-          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
-          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
           FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
         run: |
           echo "::group::Destino resolvido"
@@ -209,12 +209,12 @@ jobs:
       #       SERIAM enviados/atualizados/removidos, SEM alterar nada na KingHost.
       #       Roda sempre; se o usuário disparou o workflow com dry_run=true,
       #       o step de deploy real é pulado logo abaixo.
-      - name: "Dry-run FTP (simulação — não altera a KingHost)"
+      - name: "Dry-run FTP (simulação — não altera o cPanel)"
         id: ftp-dry-run
         env:
-          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
-          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
-          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
           FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
           LOCAL_DIR: ${{ steps.locate-shell.outputs.deploy_dir }}
         run: |
@@ -258,7 +258,7 @@ jobs:
           echo "::endgroup::"
 
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            echo "::notice::🧪 DRY-RUN concluído. Nenhum arquivo foi alterado na KingHost. Rode o workflow novamente sem 'dry_run' para efetivar o deploy."
+            echo "::notice::🧪 DRY-RUN concluído. Nenhum arquivo foi alterado no cPanel. Rode o workflow novamente sem 'dry_run' para efetivar o deploy."
           fi
 
       # 6.97. Se solicitado, apaga o .ftp-deploy-sync-state.json remoto para
@@ -268,9 +268,9 @@ jobs:
       - name: "Resetar estado remoto do ftp-deploy (.ftp-deploy-sync-state.json)"
         if: github.event.inputs.dry_run != 'true' && github.event.inputs.reset_sync_state == 'true'
         env:
-          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
-          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
-          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
           FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
         run: |
           echo "::group::Removendo .ftp-deploy-sync-state.json remoto"
@@ -290,7 +290,7 @@ jobs:
              || echo "::warning::Falha ao remover .ftp-deploy-sync-state.json — o deploy seguirá mesmo assim."
           echo "::endgroup::"
 
-      - name: "Deploy FTP para KingHost (com retry)"
+      - name: "Deploy FTP para cPanel (com retry)"
         if: github.event.inputs.dry_run != 'true'
         id: ftp-deploy
         uses: nick-fields/retry@v3
@@ -301,17 +301,17 @@ jobs:
           retry_on: error
           on_retry_command: echo "::warning::Tentativa de FTP falhou. Aguardando antes de tentar novamente..."
           command: |
-            echo "::group::Tentativa de deploy FTP para KingHost"
+            echo "::group::Tentativa de deploy FTP para cPanel"
             echo "Diretório local: ${{ steps.locate-shell.outputs.deploy_dir }}/"
             echo "Diretório remoto (auto-detectado): ${{ steps.detect-public-dir.outputs.public_dir }}"
-            echo "Servidor: ${{ secrets.KINGHOST_FTP_HOST }}"
+            echo "Servidor: ${{ secrets.CPANEL_FTP_HOST }}"
             echo "Iniciando em: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             echo "::endgroup::"
 
             npx --yes @samkirkland/ftp-deploy@4.3.5 \
-              --server "${{ secrets.KINGHOST_FTP_HOST }}" \
-              --username "${{ secrets.KINGHOST_FTP_USER }}" \
-              --password "${{ secrets.KINGHOST_FTP_PASS }}" \
+              --server "${{ secrets.CPANEL_FTP_HOST }}" \
+              --username "${{ secrets.CPANEL_FTP_USER }}" \
+              --password "${{ secrets.CPANEL_FTP_PASS }}" \
               --local-dir "${{ steps.locate-shell.outputs.deploy_dir }}/" \
               --server-dir "${{ steps.detect-public-dir.outputs.public_dir }}" \
               --protocol ftps \
@@ -335,7 +335,7 @@ jobs:
           elif [ "${{ steps.ftp-deploy.outcome }}" = "success" ]; then
             echo "::notice::✅ Deploy FTP concluído com sucesso após ${{ steps.ftp-deploy.outputs.total_attempts || '1' }} tentativa(s)."
           else
-            echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões da KingHost)."
+            echo "::error::❌ Deploy FTP falhou após todas as tentativas. Verifique os logs verbosos acima (timeouts, credenciais, permissões de diretório, limite de conexões do cPanel)."
           fi
 
       # 7.5. Verifica via FTP que os favicons realmente aterrissaram no diretório remoto
@@ -343,9 +343,9 @@ jobs:
       - name: "Validar presença dos favicons no FTP remoto (pós-deploy)"
         if: steps.ftp-deploy.outcome == 'success'
         env:
-          FTP_HOST: ${{ secrets.KINGHOST_FTP_HOST }}
-          FTP_USER: ${{ secrets.KINGHOST_FTP_USER }}
-          FTP_PASS: ${{ secrets.KINGHOST_FTP_PASS }}
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
           FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
           LOCAL_DIR: ${{ steps.locate-shell.outputs.deploy_dir }}
         run: |
@@ -392,7 +392,7 @@ jobs:
       - name: "Verificar favicons via HTTP (exige content-type image/png)"
         if: steps.ftp-deploy.outcome == 'success'
         env:
-          VERIFY_BASE_URL: ${{ secrets.KINGHOST_VERIFY_URL || 'https://nildacontabilidade.com.br' }}
+          VERIFY_BASE_URL: ${{ secrets.CPANEL_VERIFY_URL || 'https://nildacontabilidade.com.br' }}
         run: |
           set -u
           echo "Base URL de verificação: $VERIFY_BASE_URL"
