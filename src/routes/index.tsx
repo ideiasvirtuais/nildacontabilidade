@@ -304,8 +304,20 @@ function Home() {
 
           <div className="rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
             <div className="text-xs uppercase tracking-[0.25em] text-accent">A fundadora</div>
-            <h3 className="mt-2 font-display text-3xl text-primary">Nilda Luiz</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Contadora — CRC/MG 064314/O-3</p>
+            <div className="mt-4 flex items-center gap-4">
+              <img
+                src={empresaContadora}
+                alt="Nilda Luiz, fundadora da Nilda Contabilidade"
+                width={80}
+                height={80}
+                loading="lazy"
+                className="h-20 w-20 shrink-0 rounded-full object-cover object-top shadow-[var(--shadow-soft)]"
+              />
+              <div>
+                <h3 className="font-display text-3xl text-primary">Nilda Luiz</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Contadora — CRC/MG 064314/O-3</p>
+              </div>
+            </div>
             <ul className="mt-6 space-y-3 text-sm text-foreground">
               <li className="flex gap-3"><GraduationCap className="h-5 w-5 shrink-0 text-accent" /> Bacharel em Ciências Contábeis</li>
               <li className="flex gap-3"><Gavel className="h-5 w-5 shrink-0 text-accent" /> Pós-graduada em Direito Tributário</li>
