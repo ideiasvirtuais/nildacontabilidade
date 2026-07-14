@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, MessageCircle, Instagram, Facebook, Linkedin, ShieldCheck } from "lucide-react";
 import { NildaLogo } from "./NildaLogo";
 
 export function SiteFooter() {
@@ -9,8 +9,38 @@ export function SiteFooter() {
         <div>
           <NildaLogo variant="light" className="h-16 w-auto sm:h-20" />
           <p className="mt-4 text-sm text-primary-foreground/70">
-            Assessoria contábil e jurídica com seriedade, comprometimento e transparência desde 1996.
+            Contabilidade, consultoria tributária e assessoria jurídica especializada para cooperativas e empresas
+            desde 1996.
           </p>
+          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-primary-foreground/80">
+            <ShieldCheck className="h-3.5 w-3.5 text-accent" />
+            CRC/MG 064314/O-3
+          </div>
+
+          {/* Redes sociais (placeholders — atualizar quando os perfis forem confirmados) */}
+          <div className="mt-6 flex items-center gap-3">
+            <a
+              href="#"
+              aria-label="Instagram Nilda Contabilidade"
+              className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"
+            >
+              <Instagram className="h-4 w-4" />
+            </a>
+            <a
+              href="#"
+              aria-label="Facebook Nilda Contabilidade"
+              className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"
+            >
+              <Facebook className="h-4 w-4" />
+            </a>
+            <a
+              href="#"
+              aria-label="LinkedIn Nilda Contabilidade"
+              className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"
+            >
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </div>
         </div>
         <div>
           <h4 className="text-sm uppercase tracking-widest text-accent">Navegação</h4>
@@ -28,7 +58,17 @@ export function SiteFooter() {
           <h4 className="text-sm uppercase tracking-widest text-accent">Contato</h4>
           <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 3531-4004</li>
-            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 98553-8780</li>
+            <li className="flex items-center gap-2">
+              <MessageCircle className="h-4 w-4 text-accent" />
+              <a
+                href="https://wa.me/5531985538780"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent"
+              >
+                WhatsApp (31) 98553-8780
+              </a>
+            </li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> (31) 98555-4004</li>
             <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:contato@nildacontabilidade.com.br" className="hover:text-accent">contato@nildacontabilidade.com.br</a></li>
             <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> <a href="mailto:fiscal@nildacontabilidade.com.br" className="hover:text-accent">fiscal@nildacontabilidade.com.br</a></li>
@@ -42,11 +82,20 @@ export function SiteFooter() {
             <MapPin className="mt-1 h-4 w-4 shrink-0" />
             <span>Rua Doutor Euzébio Dias Bicalho, 35<br />Bairro Chácara — Betim/MG<br />CEP 32670-286</span>
           </p>
+          <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+            <iframe
+              title="Mapa Nilda Contabilidade — Betim/MG"
+              src="https://www.google.com/maps?q=Rua+Doutor+Euz%C3%A9bio+Dias+Bicalho,+35,+Betim,+MG&output=embed"
+              className="h-40 w-full"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-6 py-6 text-xs text-primary-foreground/60">
-          © {new Date().getFullYear()} Nilda Contabilidade. Todos os direitos reservados.
+          © {new Date().getFullYear()} Nilda Contabilidade. Todos os direitos reservados. · CRC/MG 064314/O-3
         </div>
       </div>
     </footer>
