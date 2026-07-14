@@ -350,7 +350,7 @@ jobs:
           LOCAL_DIR: ${{ steps.locate-shell.outputs.deploy_dir }}
         run: |
           set -u
-          FILES=("favicon-32x32.png" "apple-touch-icon.png")
+          FILES=("favicon-32x32.png" "apple-touch-icon.png" "nilda-logo.png")
 
           echo "::group::Listagem remota dos favicons"
           REMOTE_LS=$(lftp -u "$FTP_USER","$FTP_PASS" -e "
@@ -398,7 +398,7 @@ jobs:
           echo "Base URL de verificação: $VERIFY_BASE_URL"
           sleep 10  # propagação/cache
 
-          paths=("/favicon-32x32.png" "/apple-touch-icon.png")
+          paths=("/favicon-32x32.png" "/apple-touch-icon.png" "/nilda-logo.png")
 
           failed=0
           for p in "${paths[@]}"; do
