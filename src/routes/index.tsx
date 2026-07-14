@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroCooperativas from "../assets/hero-cooperativas.jpg";
+import empresaContadora from "../assets/empresa-contadora.jpg";
 import {
   ArrowRight,
   Truck,
