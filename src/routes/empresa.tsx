@@ -45,7 +45,7 @@ const fundadora = [
   { icon: Gavel, text: "Pós-graduada em Direito Tributário" },
   { icon: Users2, text: "Especialista em cooperativas" },
   { icon: Landmark, text: "Especialista em tributação" },
-  { icon: CalendarClock, text: "Mais de 40 anos de experiência" },
+  { icon: CalendarClock, text: "Mais de 30 anos de experiência" },
   { icon: Globe2, text: "Atendimento em todo o Brasil" },
 ];
 
