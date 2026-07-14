@@ -110,13 +110,17 @@ function Contato() {
       <section className="mx-auto max-w-7xl px-6 pb-20">
         <div className="overflow-hidden rounded-2xl border border-border">
           <iframe
-            title="Mapa"
-            src="https://www.google.com/maps?q=Rua+Doutor+Euz%C3%A9bio+Dias+Bicalho,+35,+Betim,+MG&output=embed"
-            className="h-[380px] w-full"
+            title="Mapa Nilda Contabilidade em Betim"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3750.0734997785908!2d-44.1878171!3d-19.963411!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6d9487d629e51%3A0x21baa2d07096b297!2sNilda%20Contabilidade%20em%20Betim!5e0!3m2!1spt-BR!2sbr!4v1784051890847!5m2!1spt-BR!2sbr"
+            className="h-[400px] w-full"
+            style={{ border: 0 }}
             loading="lazy"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
           />
         </div>
       </section>
+
     </>
   );
 }
