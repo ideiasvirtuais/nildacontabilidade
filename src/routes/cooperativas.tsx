@@ -6,13 +6,25 @@ import { useState } from "react";
 export const Route = createFileRoute("/cooperativas")({
   head: () => ({
     meta: [
-      { title: "Contabilidade e Assessoria para Cooperativas — Nilda Contabilidade" },
-      { name: "description", content: "Especialistas em cooperativas de transporte de cargas e passageiros. Governança, AGO/AGE, Conselho Fiscal, FATES, Reforma Tributária, ANTT e CIOT." },
-      { property: "og:title", content: "Contabilidade e Assessoria para Cooperativas" },
-      { property: "og:description", content: "Assessoria especializada para cooperativas de transporte em todo o Brasil." },
-      { property: "og:url", content: "/cooperativas" },
+      { title: "Contabilidade para Cooperativas de Transporte — Nilda Contabilidade" },
+      {
+        name: "description",
+        content:
+          "Especialistas em cooperativas de transporte de cargas, passageiros e hortifrutigranjeiros. Governança, AGO/AGE, Conselho Fiscal, FATES, Reforma Tributária, ANTT, CIOT e auditoria.",
+      },
+      {
+        name: "keywords",
+        content:
+          "contabilidade para cooperativas, cooperativas de transporte, cooperativas de trabalho, ato cooperado, auditoria em cooperativas, ANTT, CIOT, FATES, reforma tributária cooperativas",
+      },
+      { property: "og:title", content: "Contabilidade para Cooperativas de Transporte — Nilda Contabilidade" },
+      {
+        property: "og:description",
+        content: "Assessoria contábil, tributária e jurídica especializada para cooperativas em todo o Brasil.",
+      },
+      { property: "og:url", content: "https://nildacontabilidade.lovable.app/cooperativas" },
     ],
-    links: [{ rel: "canonical", href: "/cooperativas" }],
+    links: [{ rel: "canonical", href: "https://nildacontabilidade.lovable.app/cooperativas" }],
   }),
   component: Cooperativas,
 });
