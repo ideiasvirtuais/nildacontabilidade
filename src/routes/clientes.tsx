@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
+import betimcoop from "../assets/clients/betimcoop.jpg.asset.json";
 import rodarBrasil from "../assets/clients/rodar-brasil.jpg.asset.json";
 import sintesc from "../assets/clients/sintesc.jpg.asset.json";
 import gpgSeguros from "../assets/clients/gpg-seguros.jpg.asset.json";
@@ -10,6 +11,9 @@ import angelTour from "../assets/clients/angel-tour.jpg.asset.json";
 import simocemg from "../assets/clients/simocemg.jpg.asset.json";
 import marreta from "../assets/clients/marreta.jpg.asset.json";
 import abrasil from "../assets/clients/abrasil.jpg.asset.json";
+import kamargos from "../assets/clients/kamargos.jpg.asset.json";
+import maister from "../assets/clients/maister.jpg.asset.json";
+import tca from "../assets/clients/tca.jpg.asset.json";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
