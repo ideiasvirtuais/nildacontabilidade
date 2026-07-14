@@ -1,39 +1,26 @@
-import c1 from "../assets/clients/cliente-1.jpg.asset.json";
-import c2 from "../assets/clients/cliente-2.jpg.asset.json";
-import c3 from "../assets/clients/cliente-3.jpg.asset.json";
-import c4 from "../assets/clients/cliente-4.jpg.asset.json";
-import c5 from "../assets/clients/cliente-5.jpg.asset.json";
-import c6 from "../assets/clients/cliente-6.jpg.asset.json";
-import c7 from "../assets/clients/cliente-7.jpg.asset.json";
-import c8 from "../assets/clients/cliente-8.jpg.asset.json";
-import c9 from "../assets/clients/cliente-9.jpg.asset.json";
-import c10 from "../assets/clients/cliente-10.jpg.asset.json";
-import c11 from "../assets/clients/cliente-11.jpg.asset.json";
-import c12 from "../assets/clients/cliente-12.jpg.asset.json";
-import c13 from "../assets/clients/cliente-13.jpg.asset.json";
+import rodarBrasil from "../assets/clients/rodar-brasil.jpg.asset.json";
+import sintesc from "../assets/clients/sintesc.jpg.asset.json";
+import gpgSeguros from "../assets/clients/gpg-seguros.jpg.asset.json";
+import oxGenium from "../assets/clients/ox-genium.jpg.asset.json";
+import coopertransp from "../assets/clients/coopertransp.jpg.asset.json";
+import joelmaFerraz from "../assets/clients/joelma-ferraz.jpg.asset.json";
+import angelTour from "../assets/clients/angel-tour.jpg.asset.json";
+import simocemg from "../assets/clients/simocemg.jpg.asset.json";
+import marreta from "../assets/clients/marreta.jpg.asset.json";
+import abrasil from "../assets/clients/abrasil.jpg.asset.json";
 
-// Nomes reais das cooperativas atendidas (usados como alt/legenda até
-// que as logos oficiais sejam enviadas pelo cliente).
-const clientNames = [
-  "Betimcoop",
-  "Coopitatiaiuçu",
-  "CooperlogHF",
-  "Coopersind",
-  "Coopervia",
-  "Coopertraf",
-  "Coopercarga",
-  "Coopertransp",
-  "Cootrampas",
-  "Coopercam",
-  "Coopnorte",
-  "Coopersul",
-  "Coopercentro",
+const logos = [
+  { src: rodarBrasil.url, alt: "Rodar Brasil — Cooperativa de Transportes" },
+  { src: sintesc.url, alt: "SINTESC — Sindicato dos Transportadores Escolares da RMBH" },
+  { src: simocemg.url, alt: "SIMOCEMG — Sindicato dos Motoristas Cegonheiros de MG" },
+  { src: coopertransp.url, alt: "Coopertransp — Cooperativa de Transporte de Passageiros e Cargas" },
+  { src: angelTour.url, alt: "Angel Tour" },
+  { src: gpgSeguros.url, alt: "GPG Seguros" },
+  { src: oxGenium.url, alt: "Ox-Genium" },
+  { src: marreta.url, alt: "Frango do Marreta" },
+  { src: abrasil.url, alt: "Abrasil Digital Print" },
+  { src: joelmaFerraz.url, alt: "Joelma Ferraz" },
 ];
-
-const logos = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13].map((a, i) => ({
-  src: a.url,
-  alt: clientNames[i] ?? `Cliente ${i + 1}`,
-}));
 
 export function ClientsCarousel() {
   const loop = [...logos, ...logos];
@@ -49,8 +36,9 @@ export function ClientsCarousel() {
             Quem confia no nosso trabalho
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">
-            Betimcoop, Coopitatiaiuçu, CooperlogHF, Coopersind, Coopervia, Coopertraf e outras cooperativas e empresas
-            atendidas pela Nilda Contabilidade.
+            Rodar Brasil, SINTESC, SIMOCEMG, Coopertransp, Angel Tour, GPG Seguros, Ox-Genium, Frango do Marreta,
+            Abrasil Digital Print e Joelma Ferraz — entre outras cooperativas e empresas atendidas pela Nilda
+            Contabilidade.
           </p>
         </div>
 
