@@ -78,19 +78,29 @@ export function SiteFooter() {
         </div>
         <div>
           <h4 className="text-sm uppercase tracking-widest text-accent">Endereço</h4>
-          <p className="mt-4 flex gap-2 text-sm text-primary-foreground/80">
+          <a
+            href="https://maps.app.goo.gl/rN4MErJhyyD9oNnj6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex gap-2 text-sm text-primary-foreground/80 transition-colors hover:text-accent"
+          >
             <MapPin className="mt-1 h-4 w-4 shrink-0" />
             <span>Rua Doutor Euzébio Dias Bicalho, 35<br />Bairro Chácara — Betim/MG<br />CEP 32670-286</span>
-          </p>
-          <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+          </a>
+          <a
+            href="https://maps.app.goo.gl/rN4MErJhyyD9oNnj6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 block overflow-hidden rounded-xl border border-white/10"
+          >
             <iframe
               title="Mapa Nilda Contabilidade — Betim/MG"
-              src="https://www.google.com/maps?q=Rua+Doutor+Euz%C3%A9bio+Dias+Bicalho,+35,+Betim,+MG&output=embed"
-              className="h-40 w-full"
+              src="https://www.google.com/maps?q=Rua+Doutor+Euz%C3%A9bio+Dias+Bicalho,+35,+Bairro+Ch%C3%A1cara,+Betim,+MG,+32670-286&z=16&output=embed"
+              className="pointer-events-none h-40 w-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
+          </a>
         </div>
       </div>
       <div className="border-t border-white/10">
