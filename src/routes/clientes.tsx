@@ -30,15 +30,19 @@ export const Route = createFileRoute("/clientes")({
 });
 
 const clients = [
+  { src: betimcoop.url, name: "Betimcoop", desc: "Transporte e Logística" },
   { src: rodarBrasil.url, name: "Rodar Brasil", desc: "Cooperativa de Transportes" },
   { src: sintesc.url, name: "SINTESC", desc: "Sindicato dos Transportadores Escolares — RMBH" },
   { src: simocemg.url, name: "SIMOCEMG", desc: "Sindicato dos Motoristas Cegonheiros de MG" },
   { src: coopertransp.url, name: "Coopertransp", desc: "Transporte de Passageiros e Cargas — Nova Lima" },
   { src: angelTour.url, name: "Angel Tour", desc: "Turismo e Transporte" },
+  { src: maister.url, name: "Maister Motores", desc: "" },
   { src: gpgSeguros.url, name: "GPG Seguros", desc: "Corretora de Seguros" },
+  { src: tca.url, name: "TCA", desc: "Estudos, Projetos e Monitoramento Ambiental" },
   { src: oxGenium.url, name: "Ox-Genium", desc: "" },
   { src: marreta.url, name: "Frango do Marreta", desc: "" },
   { src: abrasil.url, name: "Abrasil Digital Print", desc: "" },
+  { src: kamargos.url, name: "Foto Studio Kamargos", desc: "" },
   { src: joelmaFerraz.url, name: "Joelma Ferraz", desc: "" },
 ];
 
