@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "../components/SectionHeading";
+import betimcoop from "../assets/clients/betimcoop.jpg.asset.json";
 import rodarBrasil from "../assets/clients/rodar-brasil.jpg.asset.json";
 import sintesc from "../assets/clients/sintesc.jpg.asset.json";
 import gpgSeguros from "../assets/clients/gpg-seguros.jpg.asset.json";
@@ -10,6 +11,9 @@ import angelTour from "../assets/clients/angel-tour.jpg.asset.json";
 import simocemg from "../assets/clients/simocemg.jpg.asset.json";
 import marreta from "../assets/clients/marreta.jpg.asset.json";
 import abrasil from "../assets/clients/abrasil.jpg.asset.json";
+import kamargos from "../assets/clients/kamargos.jpg.asset.json";
+import maister from "../assets/clients/maister.jpg.asset.json";
+import tca from "../assets/clients/tca.jpg.asset.json";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
@@ -26,15 +30,19 @@ export const Route = createFileRoute("/clientes")({
 });
 
 const clients = [
+  { src: betimcoop.url, name: "Betimcoop", desc: "Transporte e Logística" },
   { src: rodarBrasil.url, name: "Rodar Brasil", desc: "Cooperativa de Transportes" },
   { src: sintesc.url, name: "SINTESC", desc: "Sindicato dos Transportadores Escolares — RMBH" },
   { src: simocemg.url, name: "SIMOCEMG", desc: "Sindicato dos Motoristas Cegonheiros de MG" },
   { src: coopertransp.url, name: "Coopertransp", desc: "Transporte de Passageiros e Cargas — Nova Lima" },
   { src: angelTour.url, name: "Angel Tour", desc: "Turismo e Transporte" },
+  { src: maister.url, name: "Maister Motores", desc: "" },
   { src: gpgSeguros.url, name: "GPG Seguros", desc: "Corretora de Seguros" },
+  { src: tca.url, name: "TCA", desc: "Estudos, Projetos e Monitoramento Ambiental" },
   { src: oxGenium.url, name: "Ox-Genium", desc: "" },
   { src: marreta.url, name: "Frango do Marreta", desc: "" },
   { src: abrasil.url, name: "Abrasil Digital Print", desc: "" },
+  { src: kamargos.url, name: "Foto Studio Kamargos", desc: "" },
   { src: joelmaFerraz.url, name: "Joelma Ferraz", desc: "" },
 ];
 
