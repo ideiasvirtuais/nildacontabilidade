@@ -368,6 +368,46 @@ jobs:
           fi
           echo "::notice::✅ Favicons presentes no diretório remoto com o tamanho esperado."
 
+      # 7.6. Corrige permissões (chmod) pós-deploy: 644 para arquivos, 755 para pastas.
+      #      Evita 403 Forbidden causados por umask do FTP (ex.: 600/700).
+      #      OBS: ownership (chown) NÃO é possível via FTP — se o Apache
+      #      rodar em user diferente, use o File Manager do cPanel → "Fix
+      #      Permissions" ou abra um chamado no suporte da hospedagem.
+      - name: "Corrigir permissões (chmod 644/755) no cPanel"
+        if: steps.ftp-deploy.outcome == 'success'
+        env:
+          FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ secrets.CPANEL_FTP_PASS }}
+          FTP_DIR: ${{ steps.detect-public-dir.outputs.public_dir }}
+        run: |
+          set -u
+          echo "::group::Aplicando chmod recursivo (644 arquivos, 755 pastas) em $FTP_DIR"
+          lftp -u "$FTP_USER","$FTP_PASS" -e "
+            set ssl:verify-certificate no;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set net:timeout 30;
+            set net:max-retries 2;
+            open -p 21 $FTP_HOST;
+            cd \"$FTP_DIR\";
+            # Pastas 755 (leitura + execução p/ Apache atravessar)
+            find -d -type d -exec chmod 755 {} +;
+            # Arquivos 644 (leitura para o Apache servir)
+            find -type f -exec chmod 644 {} +;
+            # .htaccess explicitamente 644 (alguns hosts exigem)
+            chmod 644 .htaccess 2>/dev/null || true;
+            echo '--- Permissões da raiz após chmod: ---';
+            ls -la;
+            echo '--- Permissões da pasta assets/: ---';
+            ls -la assets/ 2>&1 || echo '(pasta assets/ não existe)';
+            bye;
+          " && echo "::notice::✅ Permissões corrigidas: 644 para arquivos, 755 para pastas." \
+             || echo "::warning::Falha ao aplicar chmod — verifique se o servidor FTP suporta o comando SITE CHMOD."
+          echo "::endgroup::"
+
+
+
       # 8. Verificação HTTP pós-deploy: exige content-type image/png exatamente
       - name: "Verificar favicons via HTTP (exige content-type image/png)"
         if: steps.ftp-deploy.outcome == 'success'
