@@ -33,21 +33,26 @@ jobs:
       - name: "Checkout do Repositorio"
         uses: actions/checkout@v4
       
-      # 2. Configura o ambiente Node.js
-      # (Esta e a forma moderna de usar "npm" no GitHub Actions)
+      # 2. Configura o ambiente Node.js (usado como runtime pelo Bun/Vite)
       - name: "Configurar Node.js"
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
 
-      # 3. Instala as dependencias
-      # (Usa 'npm install' para suportar repos sem package-lock.json)
-      - name: "Instalar Dependencias"
-        run: npm install
-      
-      # 4. Roda o script de build (que deve gerar a pasta 'dist')
-      - name: "Rodar Build"
-        run: npm run build
+      # 2.1. Instala o Bun (usado para rodar `bun run build:ftp`)
+      - name: "Configurar Bun"
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # 3. Instala as dependencias com Bun
+      - name: "Instalar Dependencias (bun install)"
+        run: bun install
+
+      # 4. Roda o build SPA dedicado para FTP/Apache (SSR fica no `npm run build` do Lovable)
+      - name: "Rodar build SPA para FTP (bun run build:ftp)"
+        run: bun run build:ftp
+
 
       # 5. Localiza o shell SPA do TanStack Start (pode variar entre dist/ e dist/client/)
       - name: "Localizar shell do TanStack Start (SPA mode)"
