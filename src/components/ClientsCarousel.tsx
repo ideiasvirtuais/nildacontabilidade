@@ -48,7 +48,7 @@ export function ClientsCarousel() {
             {loop.map((logo, i) => (
               <div
                 key={`${logo.alt}-${i}`}
-                className="flex h-24 w-48 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm sm:h-28 sm:w-56"
+                className="flex h-28 w-56 shrink-0 items-center justify-center rounded-xl border border-border bg-white p-4 shadow-sm sm:h-32 sm:w-64"
                 title={logo.alt}
               >
                 <img
