@@ -81,6 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Assessoria contábil, fiscal, tributária e de recursos humanos em Betim/MG. Atendemos empresas de todos os portes com seriedade e transparência desde 1996." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cb96fa82-f7d4-4c6b-a4f4-6ce9a724af8c/id-preview-9ef0c863--7f353fb9-ece9-4cfb-8a38-80c2db35a6d6.lovable.app-1783564274986.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cb96fa82-f7d4-4c6b-a4f4-6ce9a724af8c/id-preview-9ef0c863--7f353fb9-ece9-4cfb-8a38-80c2db35a6d6.lovable.app-1783564274986.png" },
+      { name: "geo.region", content: "BR-MG" },
+      { name: "geo.placename", content: "Betim, Minas Gerais" },
+      { name: "geo.position", content: "-19.963411;-44.1878171" },
+      { name: "ICBM", content: "-19.963411, -44.1878171" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -108,9 +112,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           description:
             "Assessoria contábil, fiscal, tributária e jurídica em Betim/MG. Especialistas em cooperativas de transporte de cargas e passageiros, atendendo em todo o Brasil desde 1996.",
           foundingDate: "1996",
-          areaServed: { "@type": "Country", name: "Brasil" },
+          slogan: "Contabilidade para cooperativas e empresas desde 1996",
+          priceRange: "$$",
+          areaServed: [
+            { "@type": "Country", name: "Brasil" },
+            { "@type": "State", name: "Minas Gerais" },
+            { "@type": "City", name: "Betim" },
+            { "@type": "City", name: "Belo Horizonte" },
+            { "@type": "City", name: "Contagem" },
+            { "@type": "City", name: "Ibirité" },
+          ],
           telephone: "+55-31-3531-4004",
           email: "contato@nildacontabilidade.com.br",
+          hasMap: "https://maps.app.goo.gl/WnE8pEYURky41qsj6",
           address: {
             "@type": "PostalAddress",
             streetAddress: "Rua Doutor Euzébio Dias Bicalho, 35 — Chácara",
@@ -119,6 +133,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             postalCode: "32670-286",
             addressCountry: "BR",
           },
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: -19.963411,
+            longitude: -44.1878171,
+          },
+          openingHoursSpecification: [
+            {
+              "@type": "OpeningHoursSpecification",
+              dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              opens: "08:00",
+              closes: "18:00",
+            },
+          ],
+          sameAs: [
+            "https://maps.app.goo.gl/WnE8pEYURky41qsj6",
+          ],
           contactPoint: [
             {
               "@type": "ContactPoint",
