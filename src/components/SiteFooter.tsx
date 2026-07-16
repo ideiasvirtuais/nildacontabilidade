@@ -106,8 +106,20 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-6 text-xs text-primary-foreground/60">
-          © {new Date().getFullYear()} Nilda Contabilidade. Todos os direitos reservados. · CRC/MG 064314/O-3
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs text-primary-foreground/60 md:flex-row md:items-center md:justify-between">
+          <span>© {new Date().getFullYear()} Nilda Contabilidade. Todos os direitos reservados. · CRC/MG 064314/O-3</span>
+          <span>
+            Site desenvolvido por{" "}
+            <a
+              href="https://www.ideiasvirtuais.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary-foreground/80 transition-colors hover:text-accent"
+            >
+              IDEIAS VIRTUAIS
+            </a>{" "}
+            - 2026
+          </span>
         </div>
       </div>
     </footer>
