@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicosRouteImport } from './routes/servicos'
 import { Route as LegislacaoRouteImport } from './routes/legislacao'
 import { Route as EmpresaRouteImport } from './routes/empresa'
+import { Route as DepoimentosRouteImport } from './routes/depoimentos'
 import { Route as CooperativasRouteImport } from './routes/cooperativas'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as ClientesRouteImport } from './routes/clientes'
@@ -37,6 +38,11 @@ const LegislacaoRoute = LegislacaoRouteImport.update({
 const EmpresaRoute = EmpresaRouteImport.update({
   id: '/empresa',
   path: '/empresa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepoimentosRoute = DepoimentosRouteImport.update({
+  id: '/depoimentos',
+  path: '/depoimentos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CooperativasRoute = CooperativasRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
   '/cooperativas': typeof CooperativasRoute
+  '/depoimentos': typeof DepoimentosRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
   '/cooperativas': typeof CooperativasRoute
+  '/depoimentos': typeof DepoimentosRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRoute
   '/contato': typeof ContatoRoute
   '/cooperativas': typeof CooperativasRoute
+  '/depoimentos': typeof DepoimentosRoute
   '/empresa': typeof EmpresaRoute
   '/legislacao': typeof LegislacaoRoute
   '/servicos': typeof ServicosRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/contato'
     | '/cooperativas'
+    | '/depoimentos'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/contato'
     | '/cooperativas'
+    | '/depoimentos'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/contato'
     | '/cooperativas'
+    | '/depoimentos'
     | '/empresa'
     | '/legislacao'
     | '/servicos'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   ClientesRoute: typeof ClientesRoute
   ContatoRoute: typeof ContatoRoute
   CooperativasRoute: typeof CooperativasRoute
+  DepoimentosRoute: typeof DepoimentosRoute
   EmpresaRoute: typeof EmpresaRoute
   LegislacaoRoute: typeof LegislacaoRoute
   ServicosRoute: typeof ServicosRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/empresa'
       fullPath: '/empresa'
       preLoaderRoute: typeof EmpresaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/depoimentos': {
+      id: '/depoimentos'
+      path: '/depoimentos'
+      fullPath: '/depoimentos'
+      preLoaderRoute: typeof DepoimentosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cooperativas': {
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientesRoute: ClientesRoute,
   ContatoRoute: ContatoRoute,
   CooperativasRoute: CooperativasRoute,
+  DepoimentosRoute: DepoimentosRoute,
   EmpresaRoute: EmpresaRoute,
   LegislacaoRoute: LegislacaoRoute,
   ServicosRoute: ServicosRoute,
