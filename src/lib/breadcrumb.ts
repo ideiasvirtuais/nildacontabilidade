@@ -7,6 +7,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   empresa: "A Empresa",
   cooperativas: "Cooperativas",
   servicos: "Serviços",
+  depoimentos: "Depoimentos",
   blog: "Blog Técnico",
   legislacao: "Legislação",
   clientes: "Clientes",

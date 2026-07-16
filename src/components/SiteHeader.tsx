@@ -11,6 +11,7 @@ import {
   BookOpen,
   Scale,
   Mail,
+  Star,
   type LucideIcon,
 } from "lucide-react";
 import { NildaLogo } from "./NildaLogo";
@@ -20,6 +21,7 @@ const nav: { to: string; label: string; icon: LucideIcon }[] = [
   { to: "/empresa", label: "Empresa", icon: Building2 },
   { to: "/cooperativas", label: "Cooperativas", icon: Users },
   { to: "/servicos", label: "Serviços", icon: Briefcase },
+  { to: "/depoimentos", label: "Depoimentos", icon: Star },
   { to: "/blog", label: "Blog", icon: BookOpen },
   { to: "/legislacao", label: "Legislação", icon: Scale },
   { to: "/contato", label: "Contato", icon: Mail },
