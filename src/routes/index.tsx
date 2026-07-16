@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
       {
         name: "keywords",
         content:
-          "contabilidade para cooperativas, contabilidade em Belo Horizonte, contabilidade em Betim, cooperativas de transporte, assessoria tributária, reforma tributária, planejamento tributário, recuperação de créditos tributários, auditoria em cooperativas",
+          "contabilidade em Betim, escritório de contabilidade Betim MG, contador em Betim, contabilidade Belo Horizonte, contabilidade Contagem, contabilidade para cooperativas, cooperativas de transporte, assessoria tributária Betim, planejamento tributário MG, reforma tributária, recuperação de créditos tributários, auditoria em cooperativas",
       },
       { property: "og:title", content: "Nilda Contabilidade — Contabilidade para Cooperativas e Empresas" },
       {
