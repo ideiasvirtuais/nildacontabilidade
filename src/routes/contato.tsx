@@ -119,10 +119,30 @@ function Contato() {
           </div>
           <div>
             <h3 className="font-display text-2xl text-primary">Endereço</h3>
-            <p className="mt-4 flex gap-3 text-sm text-muted-foreground">
-              <MapPin className="mt-0.5 h-4 w-4 text-accent" />
-              Rua Doutor Euzébio Dias Bicalho, 35 — Bairro Chácara<br />Betim/MG — CEP 32670-286
-            </p>
+            <address
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+              className="mt-4 flex gap-3 text-sm not-italic text-muted-foreground"
+            >
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+              <span>
+                <span itemProp="streetAddress">Rua Doutor Euzébio Dias Bicalho, 35</span> —{" "}
+                <span itemProp="addressLocality">Bairro Chácara</span>
+                <br />
+                <span itemProp="addressLocality">Betim</span>/
+                <span itemProp="addressRegion">MG</span> — CEP{" "}
+                <span itemProp="postalCode">32670-286</span>
+                <meta itemProp="addressCountry" content="BR" />
+              </span>
+            </address>
+            <a
+              href="https://maps.app.goo.gl/WnE8pEYURky41qsj6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-accent"
+            >
+              <MapPin className="h-4 w-4" /> Ver no Google Maps
+            </a>
           </div>
         </div>
 
