@@ -119,7 +119,7 @@ export function SiteFooter() {
             >
               IDEIAS VIRTUAIS
             </a>{" "}
-            - 2026
+            - {new Date().getFullYear()}
           </span>
         </div>
       </div>
