@@ -6,22 +6,75 @@ import { Mail, MapPin, Navigation, Phone, Send } from "lucide-react";
 export const Route = createFileRoute("/contato")({
   head: () => ({
     meta: [
-      { title: "Contato — Nilda Contabilidade | Betim/MG" },
+      { title: "Contato — Nilda Contabilidade | Rua Dr. Euzébio Dias Bicalho, 35 — Betim/MG" },
       {
         name: "description",
         content:
-          "Fale com a Nilda Contabilidade em Betim/MG. Telefones, WhatsApp, e-mails e endereço. Atendimento contábil para cooperativas e empresas em todo o Brasil.",
+          "Nilda Contabilidade — Rua Doutor Euzébio Dias Bicalho, 35, Bairro Chácara, Betim/MG, CEP 32670-286. Telefone (31) 3531-4004, WhatsApp (31) 98553-8780. Atendimento a cooperativas e empresas em todo o Brasil.",
       },
       {
         name: "keywords",
         content:
-          "contato contabilidade Betim, escritório contábil Belo Horizonte, whatsapp Nilda Contabilidade, contabilidade cooperativas contato",
+          "endereço Nilda Contabilidade, contabilidade Bairro Chácara Betim, escritório contábil Betim MG, contador Betim endereço, CEP 32670-286, contabilidade Belo Horizonte, WhatsApp Nilda Contabilidade",
       },
-      { property: "og:title", content: "Contato — Nilda Contabilidade" },
-      { property: "og:description", content: "Endereço, telefones, WhatsApp e e-mails." },
+      { name: "geo.region", content: "BR-MG" },
+      { name: "geo.placename", content: "Betim, Minas Gerais" },
+      { name: "geo.position", content: "-19.963411;-44.1878171" },
+      { name: "ICBM", content: "-19.963411, -44.1878171" },
+      { property: "og:title", content: "Contato — Nilda Contabilidade em Betim/MG" },
+      {
+        property: "og:description",
+        content:
+          "Rua Doutor Euzébio Dias Bicalho, 35 — Bairro Chácara, Betim/MG. Telefone (31) 3531-4004 · WhatsApp (31) 98553-8780.",
+      },
       { property: "og:url", content: "https://nildacontabilidade.lovable.app/contato" },
+      { property: "og:type", content: "website" },
+      { property: "place:location:latitude", content: "-19.963411" },
+      { property: "place:location:longitude", content: "-44.1878171" },
     ],
     links: [{ rel: "canonical", href: "https://nildacontabilidade.lovable.app/contato" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "@id": "https://nildacontabilidade.lovable.app/contato#contact",
+          url: "https://nildacontabilidade.lovable.app/contato",
+          name: "Contato — Nilda Contabilidade",
+          about: { "@id": "https://nildacontabilidade.lovable.app/#organization" },
+          mainEntity: {
+            "@type": ["AccountingService", "LocalBusiness"],
+            "@id": "https://nildacontabilidade.lovable.app/#organization",
+            name: "Nilda Contabilidade",
+            telephone: "+55-31-3531-4004",
+            email: "contato@nildacontabilidade.com.br",
+            hasMap: "https://maps.app.goo.gl/WnE8pEYURky41qsj6",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "Rua Doutor Euzébio Dias Bicalho, 35",
+              addressLocality: "Betim",
+              addressRegion: "MG",
+              postalCode: "32670-286",
+              addressCountry: "BR",
+            },
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: -19.963411,
+              longitude: -44.1878171,
+            },
+            openingHoursSpecification: [
+              {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                opens: "08:00",
+                closes: "18:00",
+              },
+            ],
+          },
+        }),
+      },
+    ],
   }),
   component: Contato,
 });
