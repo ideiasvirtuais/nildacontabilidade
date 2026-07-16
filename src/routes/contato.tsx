@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SectionHeading } from "../components/SectionHeading";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Navigation, Phone, Send } from "lucide-react";
 
 export const Route = createFileRoute("/contato")({
   head: () => ({
@@ -118,6 +118,19 @@ function Contato() {
             allowFullScreen
             referrerPolicy="strict-origin-when-cross-origin"
           />
+          <div className="flex flex-col items-start gap-3 border-t border-border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              Rua Doutor Euzébio Dias Bicalho, 35 — Bairro Chácara, Betim/MG
+            </p>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Nilda+Contabilidade+em+Betim&destination_place_id=ChIJUZ5ifUjZpgARl7KWcNCiuiE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-soft)] transition-colors hover:bg-primary/90"
+            >
+              <Navigation className="h-4 w-4" /> Traçar rota até o escritório
+            </a>
+          </div>
         </div>
       </section>
 
