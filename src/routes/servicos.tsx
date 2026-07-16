@@ -221,31 +221,55 @@ function Servicos() {
             description="Detalhes das rotinas executadas por cada departamento da Nilda Contabilidade."
           />
 
-          <div className="mt-10 flex flex-wrap gap-2 border-b border-border">
-            {tabs.map((t) => (
-              <button
-                key={t}
-                onClick={() => setActive(t)}
-                className={`relative px-5 py-3 text-sm font-medium transition-colors ${
-                  active === t ? "text-primary" : "text-muted-foreground hover:text-primary"
-                }`}
-              >
-                Departamento {t}
-                {active === t && <span className="absolute inset-x-3 -bottom-px h-0.5 bg-accent" />}
-              </button>
-            ))}
+          <div
+            role="tablist"
+            aria-label="Departamentos internos"
+            className="mt-10 flex flex-wrap gap-2 border-b border-border"
+          >
+            {tabs.map((t) => {
+              const id = t.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+              const selected = active === t;
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  role="tab"
+                  id={`tab-${id}`}
+                  aria-selected={selected}
+                  aria-controls={`tabpanel-${id}`}
+                  tabIndex={selected ? 0 : -1}
+                  onClick={() => setActive(t)}
+                  className={`relative px-5 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    selected ? "text-primary" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  Departamento {t}
+                  {selected && <span aria-hidden="true" className="absolute inset-x-3 -bottom-px h-0.5 bg-accent" />}
+                </button>
+              );
+            })}
           </div>
 
-          <ul className="mt-10 grid gap-4 md:grid-cols-2">
-            {departments[active].map((item) => (
-              <li key={item} className="flex gap-3 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
-                <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
-                  <Check className="h-3.5 w-3.5" />
-                </span>
-                <span className="text-sm text-foreground">{item}</span>
-              </li>
-            ))}
-          </ul>
+          {(() => {
+            const id = active.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            return (
+              <ul
+                role="tabpanel"
+                id={`tabpanel-${id}`}
+                aria-labelledby={`tab-${id}`}
+                className="mt-10 grid gap-4 md:grid-cols-2"
+              >
+                {departments[active].map((item) => (
+                  <li key={item} className="flex gap-3 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]">
+                    <span aria-hidden="true" className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent text-accent-foreground">
+                      <Check className="h-3.5 w-3.5" aria-hidden="true" focusable="false" />
+                    </span>
+                    <span className="text-sm text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
         </div>
       </section>
     </>

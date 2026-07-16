@@ -354,23 +354,23 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
+      <section aria-labelledby="home-cta-heading" className="mx-auto max-w-7xl px-6 py-24">
         <div className="relative overflow-hidden rounded-3xl bg-primary px-10 py-16 text-primary-foreground md:px-16">
-          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/30 blur-3xl" />
+          <div aria-hidden="true" className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/30 blur-3xl" />
           <div className="relative flex flex-wrap items-center justify-between gap-8">
             <div className="max-w-xl">
-              <h3 className="font-display text-3xl md:text-4xl">
+              <h2 id="home-cta-heading" className="font-display text-3xl md:text-4xl">
                 Sua cooperativa ou empresa merece assessoria especializada.
-              </h3>
+              </h2>
               <p className="mt-3 text-primary-foreground/75">
                 Fale com a nossa equipe e descubra como podemos apoiar seu negócio em todo o Brasil.
               </p>
             </div>
             <Link
               to="/contato"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
             >
-              Fale conosco <ArrowRight className="h-4 w-4" />
+              Fale conosco <ArrowRight className="h-4 w-4" aria-hidden="true" focusable="false" />
             </Link>
           </div>
         </div>
