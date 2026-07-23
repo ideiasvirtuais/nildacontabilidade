@@ -16,6 +16,7 @@ import { SiteFooter } from "../components/SiteFooter";
 import { AutoBreadcrumbJsonLd } from "../components/AutoBreadcrumbJsonLd";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { WhatsAppFloat } from "../components/WhatsAppFloat";
+import { BundleDiagnostics } from "../components/BundleDiagnostics";
 
 function NotFoundComponent() {
   return (
@@ -222,6 +223,7 @@ function RootComponent() {
         <SiteFooter />
         <AutoBreadcrumbJsonLd />
         <WhatsAppFloat />
+        <BundleDiagnostics />
       </div>
     </QueryClientProvider>
   );
