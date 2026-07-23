@@ -1,6 +1,12 @@
 const logos = [
   { src: "/clients/betimcoop.jpg", alt: "Betimcoop — Transporte e Logística" },
   { src: "/clients/rodar-brasil.jpg", alt: "Rodar Brasil — Cooperativa de Transportes" },
+  { src: "/clients/ouro-minas.jpg", alt: "Ouro Minas — Cooperativa de Transporte" },
+  { src: "/clients/coopervia.jpg", alt: "Coopervia — Cooperativa de Transporte" },
+  { src: "/clients/coopersind.jpg", alt: "Coopersind — Cooperativa de Transporte" },
+  { src: "/clients/cooperinter.jpg", alt: "Cooperinter — Transporte Intermunicipal e Interestadual, Cargas e Turismo de MG" },
+  { src: "/clients/coopertraf.jpg", alt: "Coopertraf — Cooperativa de Serviços de Transporte Rodoviário Público de Passageiros" },
+  { src: "/clients/coopitatiaiucu.jpg", alt: "Coopitatiaiuçu — Cooperativa de Transporte" },
   { src: "/clients/sintesc.jpg", alt: "SINTESC — Sindicato dos Transportadores Escolares da RMBH" },
   { src: "/clients/simocemg.jpg", alt: "SIMOCEMG — Sindicato dos Motoristas Cegonheiros de MG" },
   { src: "/clients/coopertransp.jpg", alt: "Coopertransp — Cooperativa de Transporte de Passageiros e Cargas" },
