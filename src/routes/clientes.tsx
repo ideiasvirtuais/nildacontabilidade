@@ -18,6 +18,12 @@ export const Route = createFileRoute("/clientes")({
 const clients = [
   { src: "/clients/betimcoop.jpg", name: "Betimcoop", desc: "Transporte e Logística" },
   { src: "/clients/rodar-brasil.jpg", name: "Rodar Brasil", desc: "Cooperativa de Transportes" },
+  { src: "/clients/ouro-minas.jpg", name: "Ouro Minas", desc: "Cooperativa de Transporte" },
+  { src: "/clients/coopervia.jpg", name: "Coopervia", desc: "Cooperativa de Transporte" },
+  { src: "/clients/coopersind.jpg", name: "Coopersind", desc: "Cooperativa de Transporte" },
+  { src: "/clients/cooperinter.jpg", name: "Cooperinter", desc: "Transporte Intermunicipal e Interestadual, Cargas e Turismo — MG" },
+  { src: "/clients/coopertraf.jpg", name: "Coopertraf", desc: "Serviços de Transporte Rodoviário Público de Passageiros" },
+  { src: "/clients/coopitatiaiucu.jpg", name: "Coopitatiaiuçu", desc: "Cooperativa de Transporte" },
   { src: "/clients/sintesc.jpg", name: "SINTESC", desc: "Sindicato dos Transportadores Escolares — RMBH" },
   { src: "/clients/simocemg.jpg", name: "SIMOCEMG", desc: "Sindicato dos Motoristas Cegonheiros de MG" },
   { src: "/clients/coopertransp.jpg", name: "Coopertransp", desc: "Transporte de Passageiros e Cargas — Nova Lima" },
